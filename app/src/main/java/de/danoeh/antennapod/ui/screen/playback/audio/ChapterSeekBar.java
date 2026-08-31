@@ -11,6 +11,9 @@ import de.danoeh.antennapod.ui.common.ThemeUtils;
 
 public class ChapterSeekBar extends androidx.appcompat.widget.AppCompatSeekBar {
 
+    /** Demi-épaisseur de la piste, en dp. */
+    private static final float TRACK_HALF_DP = 5f;
+
     private float top;
     private float width;
     private float center;
@@ -43,9 +46,12 @@ public class ChapterSeekBar extends androidx.appcompat.widget.AppCompatSeekBar {
         dividerPos = null;
         density = context.getResources().getDisplayMetrics().density;
 
-        paintBackground.setColor(ThemeUtils.getColorFromAttr(getContext(), R.attr.colorSurfaceVariant));
-        paintBackground.setAlpha(128);
+        // Fork Balado : piste épaisse et bien contrastée (le variant à 50 % d'alpha était délavé).
+        paintBackground.setColor(ThemeUtils.getColorFromAttr(getContext(),
+                R.attr.colorSurfaceContainerHighest));
         paintProgressPrimary.setColor(ThemeUtils.getColorFromAttr(getContext(), R.attr.colorPrimary));
+        paintBackground.setAntiAlias(true);
+        paintProgressPrimary.setAntiAlias(true);
     }
 
     /**
@@ -78,8 +84,8 @@ public class ChapterSeekBar extends androidx.appcompat.widget.AppCompatSeekBar {
     @Override
     protected synchronized void onDraw(Canvas canvas) {
         center = (getBottom() - getPaddingBottom() - getTop() - getPaddingTop()) / 2.0f;
-        top = center - density * 1.5f;
-        bottom = center + density * 1.5f;
+        top = center - density * TRACK_HALF_DP;
+        bottom = center + density * TRACK_HALF_DP;
         width = (float) (getRight() - getPaddingRight() - getLeft() - getPaddingLeft());
         progressSecondary = getSecondaryProgress() / (float) getMax() * width;
         progressPrimary = getProgress() / (float) getMax() * width;
@@ -95,9 +101,12 @@ public class ChapterSeekBar extends androidx.appcompat.widget.AppCompatSeekBar {
     private void drawProgress(Canvas canvas) {
         final int saveCount = canvas.save();
         canvas.translate(getPaddingLeft(), getPaddingTop());
-        canvas.drawRect(0, top, width, bottom, paintBackground);
-        canvas.drawRect(0, top, progressSecondary, bottom, paintBackground);
-        canvas.drawRect(0, top, progressPrimary, bottom, paintProgressPrimary);
+        float radius = density * TRACK_HALF_DP;
+        canvas.drawRoundRect(0, top, width, bottom, radius, radius, paintBackground);
+        canvas.drawRoundRect(0, top, progressSecondary, bottom, radius, radius, paintBackground);
+        if (progressPrimary > 0) {
+            canvas.drawRoundRect(0, top, progressPrimary, bottom, radius, radius, paintProgressPrimary);
+        }
         canvas.restoreToCount(saveCount);
     }
 
@@ -105,8 +114,8 @@ public class ChapterSeekBar extends androidx.appcompat.widget.AppCompatSeekBar {
         final int saveCount = canvas.save();
         int currChapter = 1;
         float chapterMargin = density * 1.2f;
-        float topExpanded = center - density * 2.0f;
-        float bottomExpanded = center + density * 2.0f;
+        float topExpanded = center - density * (TRACK_HALF_DP + 1.5f);
+        float bottomExpanded = center + density * (TRACK_HALF_DP + 1.5f);
 
         canvas.translate(getPaddingLeft(), getPaddingTop());
 

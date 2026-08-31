@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Fork Balado : boutons secondaires en pastille tonale (recul, avance, vitesse, suivant). -->
+<ripple xmlns:android="http://schemas.android.com/apk/res/android"
+    android:color="?attr/colorControlHighlight">
+    <item>
+        <shape android:shape="oval">
+            <solid android:color="?attr/colorSurfaceContainerHigh" />
+        </shape>
+    </item>
+</ripple>

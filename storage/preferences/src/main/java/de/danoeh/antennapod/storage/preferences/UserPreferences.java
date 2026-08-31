@@ -212,7 +212,10 @@ public abstract class UserPreferences {
     }
 
     public static boolean getIsThemeColorTinted() {
-        return Build.VERSION.SDK_INT >= 31 && prefs.getBoolean(PREF_TINTED_COLORS, false);
+        // Fork Balado : Material You activé par défaut sur Android 12+. Sur les versions
+        // antérieures (ou si l'utilisateur le désactive), la palette violette de la marque
+        // définie dans colors.xml prend le relais.
+        return Build.VERSION.SDK_INT >= 31 && prefs.getBoolean(PREF_TINTED_COLORS, true);
     }
 
     public static List<String> getHiddenDrawerItems() {

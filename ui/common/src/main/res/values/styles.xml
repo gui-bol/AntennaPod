@@ -25,43 +25,49 @@
         <item name="icon_yellow">#F59F00</item>
         <item name="icon_green">#008537</item>
         <item name="icon_purple">#5F1984</item>
-        <item name="icon_gray">#25365A</item>
+        <item name="icon_gray">#4A4458</item>
         <item name="android:splitMotionEvents">false</item>
         <item name="android:fitsSystemWindows">false</item>
         <item name="android:windowContentTransitions">true</item>
         <item name="android:navigationBarColor">@android:color/transparent</item>
         <item name="toolbarStyle">@style/Style.AntennaPod.Toolbar</item>
         <item name="preferenceTheme">@style/AppPreferenceThemeOverlay</item>
+        <item name="shapeAppearanceCornerExtraSmall">@style/ShapeAppearance.Balado.ExtraSmall</item>
+        <item name="shapeAppearanceCornerSmall">@style/ShapeAppearance.Balado.Small</item>
+        <item name="shapeAppearanceCornerMedium">@style/ShapeAppearance.Balado.Medium</item>
+        <item name="shapeAppearanceCornerLarge">@style/ShapeAppearance.Balado.Large</item>
+        <item name="shapeAppearanceCornerExtraLarge">@style/ShapeAppearance.Balado.ExtraLarge</item>
     </style>
 
     <style name="Theme.AntennaPod.Light" parent="Theme.AntennaPod.Dynamic.Light">
         <item name="isMaterial3DynamicColorApplied">false</item>
         <item name="colorPrimary">@color/accent_light</item>
-        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorOnPrimary">@color/on_accent_light</item>
         <item name="colorAccent">@color/accent_light</item>
         <item name="colorSecondary">@color/accent_light</item>
-        <item name="colorOnSecondary">@color/white</item>
+        <item name="colorOnSecondary">@color/on_accent_light</item>
         <item name="colorPrimaryDark">@color/accent_light</item>
-        <item name="colorPrimaryContainer">#D6E6F3</item>
-        <item name="colorOnPrimaryContainer">@color/black</item>
+        <item name="colorPrimaryContainer">@color/primary_container_light</item>
+        <item name="colorOnPrimaryContainer">@color/on_primary_container_light</item>
         <item name="android:colorBackground">@color/background_light</item>
         <item name="colorSurface">@color/background_light</item>
-        <item name="colorOnSurface">@color/black</item>
-        <item name="colorOnContainer">@color/black</item>
+        <item name="colorOnSurface">@color/text_color_primary_light</item>
+        <item name="colorOnContainer">@color/text_color_primary_light</item>
         <item name="colorSurfaceVariant">@color/color_surface_variant_light</item>
         <item name="colorOnSurfaceVariant">@color/text_color_secondary_light</item>
-        <item name="colorSurfaceContainer">#EBEEF3</item>
         <item name="colorSecondaryContainer">@color/color_secondary_container_light</item>
-        <item name="colorOnSecondaryContainer">@color/black</item>
-        <item name="android:textColorPrimary">@color/black</item>
+        <item name="colorOnSecondaryContainer">@color/on_primary_container_light</item>
+        <item name="android:textColorPrimary">@color/text_color_primary_light</item>
         <item name="android:textColorSecondary">@color/text_color_secondary_light</item>
         <item name="android:textColorTertiary">@color/text_color_secondary_light</item>
-        <item name="colorOutline">@color/text_color_secondary_light</item>
-        <item name="colorOutlineVariant">@color/text_color_secondary_light</item>
-        <item name="colorSurfaceContainerHigh">@color/color_surface_variant_light</item>
-        <item name="colorSurfaceContainerHighest">#C0CFD3</item>
-        <item name="colorSurfaceContainerLow">@color/color_surface_variant_light</item>
-        <item name="colorSurfaceContainerLowest">@color/color_surface_variant_light</item>
+        <item name="colorOutline">@color/outline_light</item>
+        <item name="colorOutlineVariant">@color/outline_variant_light</item>
+        <!-- Les 5 niveaux de surface M3 : c'est ce qui donne la profondeur aux cartes. -->
+        <item name="colorSurfaceContainerLowest">@color/surface_container_lowest_light</item>
+        <item name="colorSurfaceContainerLow">@color/surface_container_low_light</item>
+        <item name="colorSurfaceContainer">@color/surface_container_light</item>
+        <item name="colorSurfaceContainerHigh">@color/surface_container_high_light</item>
+        <item name="colorSurfaceContainerHighest">@color/surface_container_highest_light</item>
     </style>
 
     <style name="Theme.AntennaPod.Dynamic.Dark" parent="Theme.Base.AntennaPod.Dynamic.Dark">
@@ -91,36 +97,41 @@
         <item name="android:navigationBarColor">@android:color/transparent</item>
         <item name="toolbarStyle">@style/Style.AntennaPod.Toolbar</item>
         <item name="preferenceTheme">@style/AppPreferenceThemeOverlay</item>
+        <item name="shapeAppearanceCornerExtraSmall">@style/ShapeAppearance.Balado.ExtraSmall</item>
+        <item name="shapeAppearanceCornerSmall">@style/ShapeAppearance.Balado.Small</item>
+        <item name="shapeAppearanceCornerMedium">@style/ShapeAppearance.Balado.Medium</item>
+        <item name="shapeAppearanceCornerLarge">@style/ShapeAppearance.Balado.Large</item>
+        <item name="shapeAppearanceCornerExtraLarge">@style/ShapeAppearance.Balado.ExtraLarge</item>
     </style>
 
     <style name="Theme.AntennaPod.Dark" parent="Theme.AntennaPod.Dynamic.Dark">
         <item name="isMaterial3DynamicColorApplied">false</item>
         <item name="colorPrimary">@color/accent_dark</item>
-        <item name="colorOnPrimary">@color/black</item>
+        <item name="colorOnPrimary">@color/on_accent_dark</item>
         <item name="colorAccent">@color/accent_dark</item>
         <item name="colorSecondary">@color/accent_dark</item>
-        <item name="colorOnSecondary">@color/black</item>
+        <item name="colorOnSecondary">@color/on_accent_dark</item>
         <item name="colorPrimaryDark">@color/accent_dark</item>
-        <item name="colorPrimaryContainer">#29374E</item>
-        <item name="colorOnPrimaryContainer">@color/white</item>
+        <item name="colorPrimaryContainer">@color/primary_container_dark</item>
+        <item name="colorOnPrimaryContainer">@color/on_primary_container_dark</item>
         <item name="android:colorBackground">@color/background_darktheme</item>
         <item name="colorSurface">@color/background_darktheme</item>
-        <item name="colorOnSurface">@color/white</item>
-        <item name="colorOnContainer">@color/white</item>
+        <item name="colorOnSurface">@color/text_color_primary_dark</item>
+        <item name="colorOnContainer">@color/text_color_primary_dark</item>
         <item name="colorSurfaceVariant">@color/color_surface_variant_dark</item>
         <item name="colorOnSurfaceVariant">@color/text_color_secondary_dark</item>
-        <item name="colorSurfaceContainer">#1C2024</item>
         <item name="colorSecondaryContainer">@color/color_secondary_container_dark</item>
-        <item name="colorOnSecondaryContainer">@color/white</item>
-        <item name="android:textColorPrimary">@color/white</item>
+        <item name="colorOnSecondaryContainer">@color/on_primary_container_dark</item>
+        <item name="android:textColorPrimary">@color/text_color_primary_dark</item>
         <item name="android:textColorSecondary">@color/text_color_secondary_dark</item>
         <item name="android:textColorTertiary">@color/text_color_secondary_dark</item>
-        <item name="colorOutline">@color/text_color_secondary_dark</item>
-        <item name="colorOutlineVariant">@color/text_color_secondary_dark</item>
-        <item name="colorSurfaceContainerHigh">@color/color_surface_variant_dark</item>
-        <item name="colorSurfaceContainerHighest">#38455C</item>
-        <item name="colorSurfaceContainerLow">@color/color_surface_variant_dark</item>
-        <item name="colorSurfaceContainerLowest">@color/color_surface_variant_dark</item>
+        <item name="colorOutline">@color/outline_dark</item>
+        <item name="colorOutlineVariant">@color/outline_variant_dark</item>
+        <item name="colorSurfaceContainerLowest">@color/surface_container_lowest_dark</item>
+        <item name="colorSurfaceContainerLow">@color/surface_container_low_dark</item>
+        <item name="colorSurfaceContainer">@color/surface_container_dark</item>
+        <item name="colorSurfaceContainerHigh">@color/surface_container_high_dark</item>
+        <item name="colorSurfaceContainerHighest">@color/surface_container_highest_dark</item>
     </style>
 
     <style name="Theme.AntennaPod.Dynamic.TrueBlack" parent="Theme.AntennaPod.Dynamic.Dark">
@@ -361,4 +372,40 @@
         <item name="widgetLayout">@layout/preference_material_switch</item>
     </style>
 
+
+    <!--
+        Fork Balado : formes M3 plus généreuses que le défaut (4/8/12/16/28dp).
+        Le rayon des coins est le signal visuel « moderne » le plus fort : il touche
+        d'un coup les dialogues, boutons, cartes, puces, menus et feuilles.
+    -->
+    <style name="ShapeAppearance.Balado.ExtraSmall" parent="ShapeAppearance.Material3.Corner.ExtraSmall">
+        <item name="cornerSize">8dp</item>
+    </style>
+
+    <style name="ShapeAppearance.Balado.Small" parent="ShapeAppearance.Material3.Corner.Small">
+        <item name="cornerSize">12dp</item>
+    </style>
+
+    <style name="ShapeAppearance.Balado.Medium" parent="ShapeAppearance.Material3.Corner.Medium">
+        <item name="cornerSize">18dp</item>
+    </style>
+
+    <style name="ShapeAppearance.Balado.Large" parent="ShapeAppearance.Material3.Corner.Large">
+        <item name="cornerSize">24dp</item>
+    </style>
+
+    <style name="ShapeAppearance.Balado.ExtraLarge" parent="ShapeAppearance.Material3.Corner.ExtraLarge">
+        <item name="cornerSize">32dp</item>
+    </style>
+
+    <!-- Pochette du lecteur : coins très arrondis, le signal « app moderne » le plus visible. -->
+    <style name="ShapeAppearance.Balado.Cover" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">24dp</item>
+    </style>
+
+    <style name="ShapeAppearance.Balado.MiniCover" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">12dp</item>
+    </style>
 </resources>

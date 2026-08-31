@@ -15,15 +15,15 @@
         android:gravity="center_vertical"
         android:layout_weight="1">
 
-        <ImageView
+        <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/imgvCover"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:adjustViewBounds="true"
-            android:cropToPadding="true"
-            android:maxWidth="96dp"
-            android:scaleType="fitCenter"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginLeft="12dp"
+            android:scaleType="centerCrop"
             android:background="@color/non_square_icon_background"
+            app:shapeAppearanceOverlay="@style/ShapeAppearance.Balado.MiniCover"
             tools:src="@tools:sample/avatars" />
 
         <LinearLayout
@@ -40,6 +40,7 @@
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
                 android:maxLines="1"
+                android:textStyle="bold"
                 style="@style/Base.TextAppearance.AppCompat.Body1"
                 tools:text="Episode title that is too long and will cause the text to wrap" />
 
@@ -57,12 +58,16 @@
 
         <de.danoeh.antennapod.ui.screen.playback.PlayButton
             android:id="@+id/butPlay"
-            android:layout_width="52dp"
-            android:layout_height="match_parent"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginEnd="14dp"
+            android:layout_marginRight="14dp"
             android:contentDescription="@string/pause_label"
-            android:background="?attr/selectableItemBackground"
+            android:background="@drawable/bg_play_button_balado"
             android:scaleType="fitCenter"
-            android:padding="8dp"
+            android:padding="11dp"
+            app:tint="?attr/colorOnPrimary"
             app:srcCompat="@drawable/ic_play_48dp"
             tools:src="@drawable/ic_play_48dp" />
 

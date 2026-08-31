@@ -10,26 +10,62 @@
     <color name="image_readability_tint">#80000000</color>
     <color name="feed_text_bg">#55333333</color>
 
-    <!-- Theme colors -->
-    <color name="background_light">#f9fcff</color>
-    <color name="background_elevated_light">#EFEEEE</color>
-    <color name="background_darktheme">#21272b</color>
-    <color name="background_elevated_darktheme">#2D3337</color>
+    <!--
+        Fork Balado : palette Material 3 dérivée du violet de l'icône (#5E35B1).
+        Les tons suivent les rampes tonales M3 (violet 40 en clair, violet 80 en sombre)
+        pour que primaire, conteneurs, contours et surfaces restent cohérents et contrastés.
+        Sert de repli quand Material You est indisponible (< Android 12) ou désactivé.
+    -->
+
+    <!-- Primaire -->
+    <color name="accent_light">#5E35B1</color>
+    <color name="accent_dark">#CFBCFF</color>
+    <color name="on_accent_light">#FFFFFF</color>
+    <color name="on_accent_dark">#371E73</color>
+    <color name="primary_container_light">#E9DDFF</color>
+    <color name="on_primary_container_light">#21005D</color>
+    <color name="primary_container_dark">#4A2E9E</color>
+    <color name="on_primary_container_dark">#E9DDFF</color>
+
+    <!-- Surfaces -->
+    <color name="background_light">#FEF7FF</color>
+    <color name="background_darktheme">#141218</color>
+    <color name="background_elevated_light">#F3EDF7</color>
+    <color name="background_elevated_darktheme">#211F26</color>
+
+    <color name="surface_container_lowest_light">#FFFFFF</color>
+    <color name="surface_container_low_light">#F7F2FA</color>
+    <color name="surface_container_light">#F3EDF7</color>
+    <color name="surface_container_high_light">#ECE6F0</color>
+    <color name="surface_container_highest_light">#E6E0E9</color>
+
+    <color name="surface_container_lowest_dark">#0E0C12</color>
+    <color name="surface_container_low_dark">#1D1B20</color>
+    <color name="surface_container_dark">#211F26</color>
+    <color name="surface_container_high_dark">#2B2930</color>
+    <color name="surface_container_highest_dark">#36343B</color>
+
+    <color name="color_surface_variant_light">#E7E0EC</color>
+    <color name="color_surface_variant_dark">#49454F</color>
+    <color name="color_secondary_container_light">#E8DEF8</color>
+    <color name="color_secondary_container_dark">#4A4458</color>
+
+    <!-- Textes et contours -->
+    <color name="text_color_primary_light">#1D1B20</color>
+    <color name="text_color_primary_dark">#E6E0E9</color>
+    <color name="text_color_secondary_light">#49454F</color>
+    <color name="text_color_secondary_dark">#CAC4D0</color>
+    <color name="outline_light">#79747E</color>
+    <color name="outline_dark">#938F99</color>
+    <color name="outline_variant_light">#CAC4D0</color>
+    <color name="outline_variant_dark">#49454F</color>
+
     <color name="non_square_icon_background">#22777777</color>
     <color name="seek_background_light">#90000000</color>
     <color name="seek_background_dark">#905B5B5B</color>
-    <color name="text_color_secondary_light">#444444</color>
-    <color name="text_color_secondary_dark">#cccccc</color>
-    <color name="color_surface_variant_light">#D3DCE0</color>
-    <color name="color_surface_variant_dark">#2F3B4F</color>
-    <color name="color_secondary_container_light">#C8D8DE</color>
-    <color name="color_secondary_container_dark">#3C4E68</color>
 
-    <color name="accent_light">#0078C2</color>
-    <color name="accent_dark">#3D8BFF</color>
-
-    <color name="gradient_000">#364ff3</color>
-    <color name="gradient_025">#2E6FF6</color>
-    <color name="gradient_075">#1EB0FC</color>
-    <color name="gradient_100">#16d0ff</color>
+    <color name="gradient_000">#5E35B1</color>
+    <color name="gradient_025">#7C4DCC</color>
+    <color name="gradient_075">#A47BEA</color>
+    <color name="gradient_100">#CFBCFF</color>
 </resources>

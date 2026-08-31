@@ -16,15 +16,16 @@
         android:layout_height="0dp"
         android:layout_weight="1">
 
-        <ImageView
+        <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/imgvCover"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_gravity="center"
-            android:layout_marginHorizontal="32dp"
-            android:foreground="@drawable/cover_fragment_ripple_border"
+            android:layout_marginHorizontal="28dp"
+            android:elevation="8dp"
             android:importantForAccessibility="no"
-            android:scaleType="fitCenter"
+            android:scaleType="centerCrop"
+            app:shapeAppearanceOverlay="@style/ShapeAppearance.Balado.Cover"
             squareImageView:direction="minimum"
             app:layout_constraintDimensionRatio="1:1"
             app:layout_constraintStart_toStartOf="parent"
@@ -53,9 +54,12 @@
             android:maxLines="2"
             android:paddingTop="2dp"
             android:paddingBottom="2dp"
-            android:textColor="?android:attr/textColorSecondary"
+            android:textAllCaps="true"
+            android:letterSpacing="0.08"
+            android:textColor="?attr/colorPrimary"
             android:textIsSelectable="false"
-            android:textSize="@dimen/text_size_small"
+            android:textSize="12sp"
+            android:textStyle="bold"
             tools:text="Podcast" />
 
         <TextView
@@ -69,8 +73,11 @@
             android:paddingBottom="2dp"
             android:textColor="?android:attr/textColorPrimary"
             android:textIsSelectable="false"
-            android:textSize="@dimen/text_size_small"
-            android:layout_marginBottom="32dp"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:paddingHorizontal="24dp"
+            android:layout_marginTop="6dp"
+            android:layout_marginBottom="28dp"
             tools:text="Episode" />
 
     </LinearLayout>
@@ -91,7 +98,7 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="8dp"
             android:paddingHorizontal="8dp"
-            android:background="@drawable/grey_border"
+            android:background="@drawable/bg_tonal_pill_balado"
             android:clickable="true"
             android:focusable="true"
             android:gravity="center"
@@ -105,6 +112,7 @@
                 android:layout_height="36dp"
                 android:contentDescription="@string/shownotes_contentdescription"
                 android:padding="2dp"
+                app:tint="?attr/colorOnSecondaryContainer"
                 app:srcCompat="@drawable/ic_info" />
 
             <TextView
@@ -117,8 +125,8 @@
                 android:gravity="center_horizontal"
                 android:maxLines="2"
                 android:text="@string/shownotes_label"
-                android:textColor="?android:attr/textColorSecondary"
-                android:textSize="16sp" />
+                android:textColor="?attr/colorOnSecondaryContainer"
+                android:textSize="15sp" />
 
         </LinearLayout>
 
@@ -128,7 +136,7 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="8dp"
             android:layout_weight="1"
-            android:background="@drawable/grey_border"
+            android:background="@drawable/bg_tonal_pill_balado"
             android:clickable="true"
             android:focusable="true"
             android:gravity="center"
