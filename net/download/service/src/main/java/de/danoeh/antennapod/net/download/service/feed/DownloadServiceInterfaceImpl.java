@@ -14,6 +14,7 @@ import de.danoeh.antennapod.storage.database.DBWriter;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.net.download.serviceinterface.DownloadServiceInterface;
+import de.danoeh.antennapod.storage.preferences.ProfileManager;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
@@ -55,7 +56,10 @@ public class DownloadServiceInterfaceImpl extends DownloadServiceInterface {
             DBWriter.addQueueItem(context, item);
             workRequest.addTag(DownloadServiceInterface.WORK_DATA_WAS_QUEUED);
         }
-        workRequest.setInputData(new Data.Builder().putLong(WORK_DATA_MEDIA_ID, item.getMedia().getId()).build());
+        workRequest.setInputData(new Data.Builder()
+                .putLong(WORK_DATA_MEDIA_ID, item.getMedia().getId())
+                .putInt(ProfileManager.WORK_DATA_PROFILE_ID, ProfileManager.getActiveProfileId())
+                .build());
         return workRequest;
     }
 

@@ -1,5 +1,6 @@
 package de.danoeh.antennapod.net.sync.service;
 
+import de.danoeh.antennapod.storage.preferences.ProfileManager;
 import android.content.Context;
 import androidx.work.BackoffPolicy;
 import androidx.work.Constraints;
@@ -20,7 +21,13 @@ import org.greenrobot.eventbus.EventBus;
 import java.util.concurrent.TimeUnit;
 
 public class SynchronizationQueueImpl extends SynchronizationQueue {
-    private static final String WORK_ID_SYNC = "SyncServiceWorkId";
+    private static final String WORK_ID_SYNC_BASE = "SyncServiceWorkId";
+
+    // Fork Balado : nom de travail unique par profil pour qu'un sync en file d'un
+    // profil ne s'exécute jamais avec les credentials d'un autre.
+    private static String workIdSync() {
+        return WORK_ID_SYNC_BASE + "_p" + ProfileManager.getActiveProfileId();
+    }
     private final Context context;
 
     public SynchronizationQueueImpl(Context context) {
@@ -29,7 +36,7 @@ public class SynchronizationQueueImpl extends SynchronizationQueue {
 
     public void sync() {
         OneTimeWorkRequest workRequest = getWorkRequest().build();
-        WorkManager.getInstance(context).enqueueUniqueWork(WORK_ID_SYNC, ExistingWorkPolicy.REPLACE, workRequest);
+        WorkManager.getInstance(context).enqueueUniqueWork(workIdSync(), ExistingWorkPolicy.REPLACE, workRequest);
     }
 
     public void syncIfNotSyncedRecently() {
@@ -42,7 +49,7 @@ public class SynchronizationQueueImpl extends SynchronizationQueue {
         OneTimeWorkRequest workRequest = getWorkRequest()
                 .setInitialDelay(0L, TimeUnit.SECONDS)
                 .build();
-        WorkManager.getInstance(context).enqueueUniqueWork(WORK_ID_SYNC, ExistingWorkPolicy.REPLACE, workRequest);
+        WorkManager.getInstance(context).enqueueUniqueWork(workIdSync(), ExistingWorkPolicy.REPLACE, workRequest);
     }
 
     public void fullSync() {
@@ -63,6 +70,9 @@ public class SynchronizationQueueImpl extends SynchronizationQueue {
 
         OneTimeWorkRequest.Builder builder = new OneTimeWorkRequest.Builder(SyncService.class)
                 .setConstraints(constraints.build())
+                .setInputData(new androidx.work.Data.Builder()
+                        .putInt(ProfileManager.WORK_DATA_PROFILE_ID, ProfileManager.getActiveProfileId())
+                        .build())
                 .setBackoffCriteria(BackoffPolicy.EXPONENTIAL, 10, TimeUnit.MINUTES);
 
         if (SyncService.isCurrentlyActive()) {

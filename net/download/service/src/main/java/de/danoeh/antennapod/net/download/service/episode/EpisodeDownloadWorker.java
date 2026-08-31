@@ -23,6 +23,7 @@ import de.danoeh.antennapod.net.download.service.feed.remote.DefaultDownloaderFa
 import de.danoeh.antennapod.net.download.service.feed.remote.Downloader;
 import de.danoeh.antennapod.net.download.serviceinterface.DownloadRequestCreator;
 import de.danoeh.antennapod.storage.database.DBReader;
+import de.danoeh.antennapod.storage.preferences.ProfileManager;
 import de.danoeh.antennapod.storage.database.DBWriter;
 import de.danoeh.antennapod.event.MessageEvent;
 import de.danoeh.antennapod.model.download.DownloadError;
@@ -55,6 +56,11 @@ public class EpisodeDownloadWorker extends Worker {
     @Override
     @NonNull
     public Result doWork() {
+        // Fork Balado : un download enqueued sous un autre profil écrirait dans la mauvaise base.
+        if (getInputData().getInt(ProfileManager.WORK_DATA_PROFILE_ID, ProfileManager.DEFAULT_PROFILE_ID)
+                != ProfileManager.getActiveProfileId()) {
+            return Result.success();
+        }
         long mediaId = getInputData().getLong(DownloadServiceInterface.WORK_DATA_MEDIA_ID, 0);
         FeedMedia media = DBReader.getFeedMedia(mediaId);
         if (media == null) {

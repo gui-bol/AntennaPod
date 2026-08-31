@@ -1,5 +1,6 @@
 package de.danoeh.antennapod.net.sync.service;
 
+import de.danoeh.antennapod.storage.preferences.ProfileManager;
 import android.Manifest;
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -65,6 +66,11 @@ public class SyncService extends Worker {
     @Override
     @NonNull
     public Result doWork() {
+        // Fork Balado : refuse un sync stampé pour un autre profil (credentials différents).
+        if (getInputData().getInt(ProfileManager.WORK_DATA_PROFILE_ID, ProfileManager.DEFAULT_PROFILE_ID)
+                != ProfileManager.getActiveProfileId()) {
+            return Result.success();
+        }
         ISyncService activeSyncProvider = getActiveSyncProvider();
         if (activeSyncProvider == null) {
             return Result.success();

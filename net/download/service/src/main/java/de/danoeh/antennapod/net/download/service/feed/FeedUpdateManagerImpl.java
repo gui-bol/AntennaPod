@@ -20,6 +20,7 @@ import de.danoeh.antennapod.event.MessageEvent;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.net.download.service.R;
 import de.danoeh.antennapod.net.download.serviceinterface.FeedUpdateManager;
+import de.danoeh.antennapod.storage.preferences.ProfileManager;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import org.greenrobot.eventbus.EventBus;
 
@@ -51,6 +52,8 @@ public class FeedUpdateManagerImpl extends FeedUpdateManager {
                     .setConstraints(new Constraints.Builder()
                         .setRequiredNetworkType(UserPreferences.isAllowMobileFeedRefresh()
                             ? NetworkType.CONNECTED : NetworkType.UNMETERED).build())
+                    .setInputData(new Data.Builder().putInt(ProfileManager.WORK_DATA_PROFILE_ID,
+                            ProfileManager.getActiveProfileId()).build())
                     .build();
             WorkManager.getInstance(context).enqueueUniquePeriodicWork(WORK_ID_FEED_UPDATE,
                     replace ? ExistingPeriodicWorkPolicy.CANCEL_AND_REENQUEUE
@@ -78,6 +81,7 @@ public class FeedUpdateManagerImpl extends FeedUpdateManager {
                     .setRequiredNetworkType(NetworkType.CONNECTED).build());
         }
         Data.Builder builder = new Data.Builder();
+        builder.putInt(ProfileManager.WORK_DATA_PROFILE_ID, ProfileManager.getActiveProfileId());
         builder.putBoolean(EXTRA_EVEN_ON_MOBILE, true);
         builder.putBoolean(EXTRA_MANUAL, true);
         if (feed != null) {

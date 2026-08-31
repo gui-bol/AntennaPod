@@ -22,6 +22,8 @@ import java.util.List;
  */
 public abstract class ProfileManager {
     public static final int DEFAULT_PROFILE_ID = 1;
+    /** Clé de Data WorkManager : les workers refusent un job stampé pour un autre profil. */
+    public static final String WORK_DATA_PROFILE_ID = "baladoProfileId";
     /** Fichier de prefs global (jamais scopé par profil) contenant le registre des profils. */
     private static final String PREFS_NAME = "profiles";
     private static final String PREF_ACTIVE_PROFILE = "activeProfileId";

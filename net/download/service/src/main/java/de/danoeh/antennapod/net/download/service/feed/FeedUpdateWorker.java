@@ -37,6 +37,7 @@ import de.danoeh.antennapod.model.download.DownloadRequest;
 import de.danoeh.antennapod.net.download.serviceinterface.DownloadRequestBuilder;
 import de.danoeh.antennapod.parser.feed.FeedHandlerResult;
 import de.danoeh.antennapod.storage.database.NonSubscribedFeedsCleaner;
+import de.danoeh.antennapod.storage.preferences.ProfileManager;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.ui.notifications.NotificationUtils;
 import java.util.ArrayList;
@@ -62,6 +63,11 @@ public class FeedUpdateWorker extends Worker {
     @Override
     @NonNull
     public Result doWork() {
+        // Fork Balado : refuse un job stampé pour un autre profil (ids de lignes DB non transposables).
+        if (getInputData().getInt(ProfileManager.WORK_DATA_PROFILE_ID, ProfileManager.DEFAULT_PROFILE_ID)
+                != ProfileManager.getActiveProfileId()) {
+            return Result.success();
+        }
         newEpisodesNotification.loadCountersBeforeRefresh();
 
         List<Feed> toUpdate;
