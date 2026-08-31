@@ -32,8 +32,8 @@
         android:icon="@mipmap/ic_launcher"
         android:roundIcon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:backupAgent=".storage.importexport.OpmlBackupAgent"
-        android:restoreAnyVersion="true"
+        android:allowBackup="false"
+        tools:replace="android:allowBackup"
         android:theme="@style/Theme.AntennaPod.Splash"
         android:usesCleartextTraffic="true"
         android:supportsRtl="true"
@@ -63,9 +63,6 @@
         <meta-data
             android:name="com.google.android.gms.car.application"
             android:resource="@xml/automotive_app_desc"/>
-        <meta-data
-            android:name="com.google.android.backup.api_key"
-            android:value="AEdPqrEAAAAI3a05VToCTlqBymJrbFGaKQMvF-bBAuLsOdavBA"/>
         <meta-data
             android:name="com.google.android.gms.cast.framework.OPTIONS_PROVIDER_CLASS_NAME"
             android:value="de.danoeh.antennapod.playback.cast.CastOptionsProvider" />
@@ -100,28 +97,6 @@
             android:windowSoftInputMode="stateAlwaysHidden"
             android:launchMode="singleTask"
             android:exported="true">
-            <intent-filter android:autoVerify="true">
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <data
-                    android:host="antennapod.org"
-                    android:pathPrefix="/deeplink/main"
-                    android:scheme="https" />
-            </intent-filter>
-            <intent-filter android:autoVerify="true">
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <data
-                    android:host="antennapod.org"
-                    android:pathPrefix="/deeplink/search"
-                    android:scheme="https" />
-            </intent-filter>
             <intent-filter>
                 <category android:name="android.intent.category.DEFAULT" />
                 <action android:name="de.danoeh.antennapod.intents.MAIN_ACTIVITY" />
@@ -230,29 +205,6 @@
                 <data android:scheme="pcast"/>
                 <data android:scheme="feed"/>
                 <data android:scheme="antennapod-subscribe"/>
-            </intent-filter>
-
-            <intent-filter android:autoVerify="true">
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <data android:host="antennapod.org" />
-                <data android:pathPrefix="/deeplink/subscribe" />
-                <data android:scheme="http" />
-                <data android:scheme="https" />
-            </intent-filter>
-
-            <intent-filter android:autoVerify="true">
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <data android:pathPattern="/.*\\..*/.*" />
-                <data android:host="www.subscribeonandroid.com" />
-                <data android:scheme="https" />
             </intent-filter>
 
             <intent-filter>

@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Fond d'icône du fork Balado : distingue visuellement le fork d'AntennaPod stock. -->
+    <color name="balado_launcher_background">#5E35B1</color>
+</resources>
