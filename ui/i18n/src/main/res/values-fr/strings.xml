@@ -1009,6 +1009,7 @@
     <string name="profile_name_hint">Nom du profil</string>
     <string name="profile_switch">Basculer vers ce profil</string>
     <string name="profile_switch_title">Changer de profil</string>
+    <string name="discover_personalized">Suggestions liées à vos écoutes</string>
     <string name="profile_switch_confirm">Basculer vers « %1$s » ? L\'application va redémarrer. La lecture sera arrêtée et les téléchargements en cours du profil actuel seront annulés.</string>
     <string name="profile_rename">Renommer</string>
     <string name="profile_delete">Supprimer</string>

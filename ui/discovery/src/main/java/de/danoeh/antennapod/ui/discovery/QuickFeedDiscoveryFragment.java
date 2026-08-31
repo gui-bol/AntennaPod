@@ -16,6 +16,7 @@ import de.danoeh.antennapod.net.discovery.BuildConfig;
 import de.danoeh.antennapod.storage.database.DBReader;
 import de.danoeh.antennapod.event.DiscoveryDefaultUpdateEvent;
 import de.danoeh.antennapod.net.discovery.ItunesTopListLoader;
+import de.danoeh.antennapod.net.discovery.PodcastIndexRecommendationLoader;
 import de.danoeh.antennapod.net.discovery.PodcastSearchResult;
 import de.danoeh.antennapod.ui.appstartintent.MainActivityStarter;
 import de.danoeh.antennapod.ui.appstartintent.OnlineFeedviewActivityStarter;
@@ -125,12 +126,29 @@ public class QuickFeedDiscoveryFragment extends Fragment implements AdapterView.
             return;
         }
 
-        disposable = Observable.fromCallable(() ->
-                        loader.loadToplist(countryCode, NUM_SUGGESTIONS, DBReader.getFeedList()))
+        disposable = Observable.fromCallable(() -> {
+                    // Fork Balado : suggestions liées aux podcasts les plus écoutés,
+                    // repli sur le palmarès iTunes du pays si indisponible.
+                    List<de.danoeh.antennapod.model.feed.Feed> subscribed = DBReader.getFeedList();
+                    List<String> seeds = getMostListenedFeedUrls(subscribed);
+                    if (!seeds.isEmpty()) {
+                        List<PodcastSearchResult> recommendations =
+                                new PodcastIndexRecommendationLoader(getContext())
+                                        .getRecommendations(seeds, subscribed, NUM_SUGGESTIONS);
+                        if (!recommendations.isEmpty()) {
+                            return new android.util.Pair<>(recommendations, true);
+                        }
+                    }
+                    return new android.util.Pair<>(
+                            loader.loadToplist(countryCode, NUM_SUGGESTIONS, subscribed), false);
+                })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
-                    podcasts -> {
+                    result -> {
+                        List<PodcastSearchResult> podcasts = result.first;
+                        viewBinding.poweredByLabel.setText(result.second
+                                ? R.string.discover_personalized : R.string.discover_powered_by_itunes);
                         viewBinding.errorContainer.setVisibility(View.GONE);
                         if (podcasts.isEmpty()) {
                             viewBinding.errorLabel.setText(getResources().getText(R.string.search_status_no_results));
@@ -157,5 +175,30 @@ public class QuickFeedDiscoveryFragment extends Fragment implements AdapterView.
             return;
         }
         startActivity(new OnlineFeedviewActivityStarter(getContext(), podcast.feedUrl).getIntent());
+    }
+
+    /** URLs des flux abonnés, ordonnées par temps d'écoute décroissant (abonnements récents si aucune écoute). */
+    private static List<String> getMostListenedFeedUrls(List<de.danoeh.antennapod.model.feed.Feed> subscribed) {
+        List<String> seeds = new ArrayList<>();
+        try {
+            List<de.danoeh.antennapod.storage.database.StatisticsItem> stats =
+                    DBReader.getStatistics(true, 0, Long.MAX_VALUE).feedTime;
+            stats.sort((a, b) -> Long.compare(b.timePlayed, a.timePlayed));
+            for (de.danoeh.antennapod.storage.database.StatisticsItem item : stats) {
+                if (item.timePlayed > 0 && item.feed.getDownloadUrl() != null && !item.feed.isLocalFeed()) {
+                    seeds.add(item.feed.getDownloadUrl());
+                }
+            }
+        } catch (Exception e) {
+            Log.w(TAG, "Could not load statistics for recommendations", e);
+        }
+        if (seeds.isEmpty()) {
+            for (de.danoeh.antennapod.model.feed.Feed feed : subscribed) {
+                if (feed.getDownloadUrl() != null && !feed.isLocalFeed()) {
+                    seeds.add(feed.getDownloadUrl());
+                }
+            }
+        }
+        return seeds;
     }
 }
