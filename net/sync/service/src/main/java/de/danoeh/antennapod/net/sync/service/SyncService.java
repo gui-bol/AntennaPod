@@ -32,6 +32,7 @@ import de.danoeh.antennapod.net.sync.nextcloud.NextcloudSyncService;
 import de.danoeh.antennapod.net.sync.serviceinterface.EpisodeAction;
 import de.danoeh.antennapod.net.sync.serviceinterface.EpisodeActionChanges;
 import de.danoeh.antennapod.net.sync.serviceinterface.ISyncService;
+import de.danoeh.antennapod.net.sync.serviceinterface.SynchronizationQueue;
 import de.danoeh.antennapod.net.sync.serviceinterface.SubscriptionChanges;
 import de.danoeh.antennapod.net.sync.serviceinterface.SyncServiceException;
 import de.danoeh.antennapod.net.sync.serviceinterface.SynchronizationProvider;
@@ -90,6 +91,11 @@ public class SyncService extends Worker {
                 Log.d(TAG, "Found new subscriptions. Need to refresh them before syncing episode actions");
                 EventBus.getDefault().postSticky(new SyncServiceEvent(R.string.sync_status_wait_for_downloads));
                 FeedUpdateManager.getInstance().runOnce(getApplicationContext());
+                // Fork Balado : upstream s'arrête ici sans jamais replanifier — les positions
+                // d'écoute n'arrivent alors qu'au prochain sync manuel ou 10 min plus tard.
+                // On replanifie un sync (délai ~2 min car currentlyActive) pour récupérer les
+                // actions d'épisodes dès que les flux sont rafraîchis.
+                SynchronizationQueue.getInstance().sync();
                 return Result.success();
             }
             syncEpisodeActions(activeSyncProvider);
