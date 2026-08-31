@@ -1061,4 +1061,17 @@
     <string name="wearos_play_on_phone" tools:ignore="UnusedResources">Play on phone</string>
     <string name="wearos_browse_phone" tools:ignore="UnusedResources">Browse phone</string>
     <string name="wearos_open_on_phone" tools:ignore="UnusedResources">Open on phone</string>
+
+    <!-- Fork Balado: profils -->
+    <string name="profiles_label">Profiles</string>
+    <string name="profiles_summary">Separate local data per user, switch anytime</string>
+    <string name="profile_active">Active profile</string>
+    <string name="profile_tap_for_actions">Tap for actions</string>
+    <string name="profile_add">Add profile</string>
+    <string name="profile_name_hint">Profile name</string>
+    <string name="profile_switch">Switch to this profile</string>
+    <string name="profile_switch_confirm">Switch to “%1$s”? The app will restart. Playback will stop and pending downloads of the current profile will be cancelled.</string>
+    <string name="profile_rename">Rename</string>
+    <string name="profile_delete">Delete</string>
+    <string name="profile_delete_confirm">Delete profile “%1$s” and all its local data (subscriptions, downloads, settings)? The account on the sync server is not affected.</string>
 </resources>

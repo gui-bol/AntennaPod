@@ -1,7 +1,5 @@
 package de.danoeh.antennapod.ui.screen.preferences;
 
-import android.graphics.PorterDuff;
-import android.graphics.PorterDuffColorFilter;
 import android.os.Bundle;
 import android.os.UserManager;
 import androidx.appcompat.app.AppCompatActivity;
@@ -35,6 +33,7 @@ public class MainPreferencesFragment extends AnimatedPreferenceFragment {
     private static final String PREF_NOTIFICATION = "notifications";
     private static final String PREF_CONTRIBUTE = "prefContribute";
     private static final String PREF_SCREEN_PARENTAL_CONTROL = "prefScreenParentalControl";
+    private static final String PREF_SCREEN_PROFILES = "profiles";
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
@@ -44,31 +43,16 @@ public class MainPreferencesFragment extends AnimatedPreferenceFragment {
         setupSearch();
         setParentalControlsVisibility();
 
-        // If you are writing a spin-off, please update the details on screens like "About" and "Report bug"
-        // and afterwards remove the following lines. Please keep in mind that AntennaPod is licensed under the GPL.
-        // This means that your application needs to be open-source under the GPL, too.
-        // It must also include a prominent copyright notice.
-        int packageHash = getContext().getPackageName().hashCode();
-        if (packageHash != 1790437538 && packageHash != -1190467065) {
-            findPreference(PREF_CATEGORY_PROJECT).setVisible(false);
-            Preference copyrightNotice = new Preference(getContext());
-            copyrightNotice.setIcon(R.drawable.ic_info_white);
-            copyrightNotice.getIcon().mutate()
-                    .setColorFilter(new PorterDuffColorFilter(0xffcc0000, PorterDuff.Mode.MULTIPLY));
-            copyrightNotice.setSummary("This application is based on AntennaPod."
-                    + " The AntennaPod team does NOT provide support for this unofficial version."
-                    + " If you can read this message, the developers of this modification"
-                    + " violate the GNU General Public License (GPL).");
-            findPreference(PREF_CATEGORY_PROJECT).getParent().addPreference(copyrightNotice);
-        } else if (packageHash == -1190467065) {
-            Preference debugNotice = new Preference(getContext());
-            debugNotice.setIcon(R.drawable.ic_info_white);
-            debugNotice.getIcon().mutate()
-                    .setColorFilter(new PorterDuffColorFilter(0xffcc0000, PorterDuff.Mode.MULTIPLY));
-            debugNotice.setOrder(-1);
-            debugNotice.setSummary("This is a development version of AntennaPod and not meant for daily use");
-            findPreference(PREF_CATEGORY_PROJECT).getParent().addPreference(debugNotice);
-        }
+        // Notice de copyright GPL (demandée par l'upstream pour les spin-offs) :
+        // Balado est un fork personnel d'AntennaPod, non distribué. Sources du fork
+        // disponibles sur github.com/gui-bol/AntennaPod (branche fork/main).
+        findPreference(PREF_CATEGORY_PROJECT).setVisible(false);
+        Preference copyrightNotice = new Preference(getContext());
+        copyrightNotice.setIcon(R.drawable.ic_info_white);
+        copyrightNotice.setSummary("Balado is a personal fork of AntennaPod (GPL-3.0)."
+                + " The AntennaPod team does NOT provide support for this version."
+                + " Source code: github.com/gui-bol/AntennaPod");
+        findPreference(PREF_CATEGORY_PROJECT).getParent().addPreference(copyrightNotice);
     }
 
     @Override
@@ -96,6 +80,12 @@ public class MainPreferencesFragment extends AnimatedPreferenceFragment {
         });
         findPreference(PREF_SCREEN_IMPORT_EXPORT).setOnPreferenceClickListener(preference -> {
             ((PreferenceActivity) getActivity()).openScreen(R.xml.preferences_import_export);
+            return true;
+        });
+        findPreference(PREF_SCREEN_PROFILES).setOnPreferenceClickListener(preference -> {
+            getParentFragmentManager().beginTransaction()
+                    .replace(R.id.settingsContainer, new ProfilesPreferencesFragment())
+                    .addToBackStack(getString(R.string.profiles_label)).commit();
             return true;
         });
         findPreference(PREF_NOTIFICATION).setOnPreferenceClickListener(preference -> {

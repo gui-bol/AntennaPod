@@ -36,6 +36,12 @@
             android:icon="@drawable/ic_cloud" />
 
     <Preference
+            android:key="profiles"
+            android:title="@string/profiles_label"
+            android:summary="@string/profiles_summary"
+            android:icon="@drawable/ic_supervisor_account" />
+
+    <Preference
             android:key="prefScreenImportExport"
             android:title="@string/import_export_pref"
             android:summary="@string/import_export_summary"

@@ -999,4 +999,17 @@
     <string name="wearos_browse_phone" tools:ignore="UnusedResources">Parcourir le téléphone</string>
     <string name="wearos_open_on_phone" tools:ignore="UnusedResources">Ouvrir sur le téléphone</string>
     <string name="feed_new_episodes_action_snackbar">Impossible à changer quand le téléchargement automatique est activé.</string>
+
+    <!-- Fork Balado: profils -->
+    <string name="profiles_label">Profils</string>
+    <string name="profiles_summary">Données locales séparées par utilisateur, basculez à tout moment</string>
+    <string name="profile_active">Profil actif</string>
+    <string name="profile_tap_for_actions">Toucher pour les actions</string>
+    <string name="profile_add">Ajouter un profil</string>
+    <string name="profile_name_hint">Nom du profil</string>
+    <string name="profile_switch">Basculer vers ce profil</string>
+    <string name="profile_switch_confirm">Basculer vers « %1$s » ? L\'application va redémarrer. La lecture sera arrêtée et les téléchargements en cours du profil actuel seront annulés.</string>
+    <string name="profile_rename">Renommer</string>
+    <string name="profile_delete">Supprimer</string>
+    <string name="profile_delete_confirm">Supprimer le profil « %1$s » et toutes ses données locales (abonnements, téléchargements, réglages) ? Le compte sur le serveur de synchronisation n\'est pas affecté.</string>
 </resources>
