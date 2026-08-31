@@ -46,6 +46,13 @@ public class PreferenceUpgrader {
             //New installation
             return;
         }
+        // Fork Balado : le fork est basé sur AntennaPod 3.12.0 (versionCode 3120095) et
+        // utilise son propre schéma de version (1, 2, ...). Un oldVersion inférieur au
+        // versionCode de base vient du fork : aucune migration upstream à rejouer, sinon
+        // toutes les étapes historiques s'exécuteraient à chaque mise à jour du fork.
+        if (oldVersion < 3120095) {
+            return;
+        }
         if (oldVersion < 1070196) {
             // migrate episode cleanup value (unit changed from days to hours)
             int oldValueInDays = UserPreferences.getEpisodeCleanupValue();
