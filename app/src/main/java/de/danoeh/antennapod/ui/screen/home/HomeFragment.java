@@ -1,5 +1,7 @@
 package de.danoeh.antennapod.ui.screen.home;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import de.danoeh.antennapod.ProfileSwitcher;
 import de.danoeh.antennapod.storage.preferences.ProfileManager;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -141,8 +143,44 @@ public class HomeFragment extends Fragment implements Toolbar.OnMenuItemClickLis
         } else if (item.getItemId() == R.id.action_search) {
             ((MainActivity) getActivity()).loadChildFragment(SearchFragment.newInstance());
             return true;
+        } else if (item.getItemId() == R.id.switch_profile_item) {
+            showProfileSwitchDialog();
+            return true;
         }
         return false;
+    }
+
+    // Fork Balado : bascule rapide de profil depuis l'écran d'accueil.
+    private void showProfileSwitchDialog() {
+        final List<Integer> ids = ProfileManager.getProfileIds();
+        final int activeId = ProfileManager.getActiveProfileId();
+        String[] names = new String[ids.size()];
+        int checked = 0;
+        for (int i = 0; i < ids.size(); i++) {
+            names[i] = ProfileManager.getProfileName(ids.get(i));
+            if (ids.get(i) == activeId) {
+                checked = i;
+            }
+        }
+        new MaterialAlertDialogBuilder(requireContext())
+                .setTitle(R.string.profile_switch_title)
+                .setSingleChoiceItems(names, checked, (dialog, which) -> {
+                    dialog.dismiss();
+                    final int targetId = ids.get(which);
+                    if (targetId == activeId) {
+                        return;
+                    }
+                    new MaterialAlertDialogBuilder(requireContext())
+                            .setTitle(R.string.profile_switch)
+                            .setMessage(getString(R.string.profile_switch_confirm,
+                                    ProfileManager.getProfileName(targetId)))
+                            .setPositiveButton(R.string.confirm_label, (d, w) ->
+                                    ProfileSwitcher.switchTo(requireContext(), targetId))
+                            .setNegativeButton(R.string.cancel_label, null)
+                            .show();
+                })
+                .setNegativeButton(R.string.cancel_label, null)
+                .show();
     }
 
     @Override

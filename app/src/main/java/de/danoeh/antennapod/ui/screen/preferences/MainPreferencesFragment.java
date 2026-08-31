@@ -49,7 +49,7 @@ public class MainPreferencesFragment extends AnimatedPreferenceFragment {
         findPreference(PREF_CATEGORY_PROJECT).setVisible(false);
         Preference copyrightNotice = new Preference(getContext());
         copyrightNotice.setIcon(R.drawable.ic_info_white);
-        copyrightNotice.setSummary("Balado is a personal fork of AntennaPod (GPL-3.0)."
+        copyrightNotice.setSummary("Balado Privé is a personal fork of AntennaPod (GPL-3.0)."
                 + " The AntennaPod team does NOT provide support for this version."
                 + " Source code: github.com/gui-bol/AntennaPod");
         findPreference(PREF_CATEGORY_PROJECT).getParent().addPreference(copyrightNotice);

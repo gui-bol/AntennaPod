@@ -73,7 +73,7 @@
     <string name="home_continue_empty_text">You can add episodes by downloading them or long-pressing them and selecting \"Add to queue\".</string>
     <string name="home_new_empty_text">New episodes will show up here. You can then decide whether you are interested in them.</string>
     <string name="home_downloads_empty_text">You can download any episode to listen to it offline.</string>
-    <string name="home_welcome_title">Welcome to AntennaPod!</string>
+    <string name="home_welcome_title">Welcome to Balado Privé!</string>
     <string name="home_welcome_text">You are not subscribed to any podcasts yet. Open the menu to add a podcast.</string>
     <string name="notification_permission_denied">You denied the permission.</string>
     <string name="configure_home">Configure home screen</string>
@@ -1070,6 +1070,7 @@
     <string name="profile_add">Add profile</string>
     <string name="profile_name_hint">Profile name</string>
     <string name="profile_switch">Switch to this profile</string>
+    <string name="profile_switch_title">Switch profile</string>
     <string name="profile_switch_confirm">Switch to “%1$s”? The app will restart. Playback will stop and pending downloads of the current profile will be cancelled.</string>
     <string name="profile_rename">Rename</string>
     <string name="profile_delete">Delete</string>
