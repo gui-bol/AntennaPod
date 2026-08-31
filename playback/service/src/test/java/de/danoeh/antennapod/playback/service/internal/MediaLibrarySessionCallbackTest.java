@@ -60,7 +60,7 @@ public class MediaLibrarySessionCallbackTest {
                 session, controllerInfo, Collections.singletonList(browseItem), C.INDEX_UNSET, C.TIME_UNSET)
                 .get(5, TimeUnit.SECONDS);
         assertEquals(1, result.mediaItems.size());
-        assertEquals(String.valueOf(mediaId), result.mediaItems.get(0).mediaId);
+        assertEquals(MediaItemAdapter.episodeMediaId(mediaId), result.mediaItems.get(0).mediaId);
         assertEquals(EPISODE_TITLE, result.mediaItems.get(0).mediaMetadata.title);
     }
 
@@ -71,7 +71,7 @@ public class MediaLibrarySessionCallbackTest {
         MediaSession.MediaItemsWithStartPosition result = callback.onPlaybackResumption(session, controllerInfo)
                 .get(5, TimeUnit.SECONDS);
         assertEquals(1, result.mediaItems.size());
-        assertEquals(String.valueOf(media.getId()), result.mediaItems.get(0).mediaId);
+        assertEquals(MediaItemAdapter.episodeMediaId(media.getId()), result.mediaItems.get(0).mediaId);
     }
 
     @Test
@@ -83,7 +83,7 @@ public class MediaLibrarySessionCallbackTest {
         MediaSession.MediaItemsWithStartPosition result = callback.onSetMediaItems(session, controllerInfo,
                 Collections.singletonList(searchItem), C.INDEX_UNSET, C.TIME_UNSET).get(5, TimeUnit.SECONDS);
         assertEquals(1, result.mediaItems.size());
-        assertEquals(String.valueOf(mediaId), result.mediaItems.get(0).mediaId);
+        assertEquals(MediaItemAdapter.episodeMediaId(mediaId), result.mediaItems.get(0).mediaId);
 
         // No match: nothing to play
         searchItem = MediaItem.EMPTY.buildUpon()
@@ -101,7 +101,7 @@ public class MediaLibrarySessionCallbackTest {
         result = callback.onSetMediaItems(session, controllerInfo,
                 Collections.singletonList(searchItem), C.INDEX_UNSET, C.TIME_UNSET).get(5, TimeUnit.SECONDS);
         assertEquals(1, result.mediaItems.size());
-        assertEquals(String.valueOf(mediaId), result.mediaItems.get(0).mediaId);
+        assertEquals(MediaItemAdapter.episodeMediaId(mediaId), result.mediaItems.get(0).mediaId);
     }
 
     private FeedMedia seedEpisode() {

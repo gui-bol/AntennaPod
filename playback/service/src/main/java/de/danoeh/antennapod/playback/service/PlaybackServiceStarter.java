@@ -45,7 +45,8 @@ public class PlaybackServiceStarter {
         if (BuildConfig.USE_MEDIA3_PLAYBACK_SERVICE) {
             PlaybackController.bindToMedia3Service(context, controller -> {
                 if (controller.getCurrentMediaItem() != null && media instanceof FeedMedia
-                        && ("" + ((FeedMedia) media).getId()).equals(controller.getCurrentMediaItem().mediaId)) {
+                        && MediaItemAdapter.episodeMediaId(((FeedMedia) media).getId())
+                                .equals(controller.getCurrentMediaItem().mediaId)) {
                     controller.play();
                     return;
                 }

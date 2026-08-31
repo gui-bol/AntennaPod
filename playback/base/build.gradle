@@ -9,6 +9,7 @@ android {
 }
 
 dependencies {
+    implementation project(':storage:preferences')
     implementation project(':model')
     implementation project(':system')
     implementation project(':net:common')

@@ -458,7 +458,7 @@ public class Media3PlaybackService extends MediaLibraryService {
         }
         pendingStreamMediaId = null;
         try {
-            long mediaId = Long.parseLong(player.getCurrentMediaItem().mediaId);
+            long mediaId = MediaItemAdapter.parseEpisodeMediaId(player.getCurrentMediaItem().mediaId);
             if (currentPlayable == null || currentPlayable.getId() != mediaId) {
                 if (mediaLoaderDisposable != null) {
                     mediaLoaderDisposable.dispose();
@@ -544,7 +544,8 @@ public class Media3PlaybackService extends MediaLibraryService {
         }
         try {
             if (player.getCurrentMediaItem() == null
-                    || currentPlayable.getId() != Long.parseLong(player.getCurrentMediaItem().mediaId)) {
+                    || currentPlayable.getId() != MediaItemAdapter.parseEpisodeMediaId(
+                            player.getCurrentMediaItem().mediaId)) {
                 return;
             }
         } catch (NumberFormatException e) {

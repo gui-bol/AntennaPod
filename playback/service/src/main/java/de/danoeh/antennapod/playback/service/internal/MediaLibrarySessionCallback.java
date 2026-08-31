@@ -296,7 +296,7 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
         Single.fromCallable(
                 () -> {
                     List<MediaItem> updatedItems = onAddMediaItems(mediaSession, controller, mediaItems).get();
-                    long mediaId = Long.parseLong(updatedItems.get(index).mediaId);
+                    long mediaId = MediaItemAdapter.parseEpisodeMediaId(updatedItems.get(index).mediaId);
                     FeedMedia mediaDetails = DBReader.getFeedMedia(mediaId);
                     return new Pair<>(updatedItems, mediaDetails);
                 })
@@ -464,7 +464,7 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
             default: // Episodes lists
                 Single.fromCallable(() -> {
                     if (parentId.startsWith(MediaItemAdapter.MEDIA_ID_FEED_PREFIX)) {
-                        long feedId = Long.parseLong(parentId.split(":")[1]);
+                        long feedId = MediaItemAdapter.parseFeedMediaId(parentId);
                         return DBReader.getFeed(feedId, true, page * pageSize, pageSize).getItems();
                     }
                     return switch (parentId) {
@@ -526,7 +526,7 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
         ImmutableList.Builder<MediaItem> builder = ImmutableList.builder();
         for (MediaItem item : mediaItems) {
             try {
-                long mediaId = Long.parseLong(item.mediaId);
+                long mediaId = MediaItemAdapter.parseEpisodeMediaId(item.mediaId);
                 FeedMedia media = DBReader.getFeedMedia(mediaId);
                 if (media == null) {
                     Log.e(TAG, "Media not found for ID: " + mediaId);
@@ -543,7 +543,7 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
     @WorkerThread
     private MediaItem createBrowsableMediaItem(String id) {
         if (id.startsWith(MediaItemAdapter.MEDIA_ID_FEED_PREFIX)) {
-            long feedId = Long.parseLong(id.split(":")[1]);
+            long feedId = MediaItemAdapter.parseFeedMediaId(id);
             Feed feed = DBReader.getFeed(feedId, false, 0, 0);
             return MediaItemAdapter.fromFeed(context, feed);
         }

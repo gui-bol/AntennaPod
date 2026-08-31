@@ -1,5 +1,6 @@
 package de.danoeh.antennapod.playback.base;
 
+import de.danoeh.antennapod.storage.preferences.ProfileManager;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -29,6 +30,41 @@ import java.util.concurrent.TimeUnit;
 public class MediaItemAdapter {
     private static final String TAG = "MediaItemAdapter";
     public static final String MEDIA_ID_FEED_PREFIX = "FeedId:";
+
+    /**
+     * Fork Balado : les media ids exposés à Android Auto/Assistant encodent le profil
+     * ("p2:1234"). Auto met les ids en cache entre les sessions : après un changement de
+     * profil, un id de l'ancien profil résoudrait vers un autre épisode dans la nouvelle
+     * base. Les ids d'un autre profil sont donc rejetés au parsing. Un id numérique nu
+     * (versions antérieures) est traité comme appartenant au profil 1.
+     */
+    public static String episodeMediaId(long id) {
+        return "p" + ProfileManager.getActiveProfileId() + ":" + id;
+    }
+
+    /** @throws NumberFormatException si l'id est invalide ou stampé pour un autre profil. */
+    public static long parseEpisodeMediaId(String mediaId) {
+        int profile = ProfileManager.DEFAULT_PROFILE_ID;
+        String idPart = mediaId;
+        int colon = mediaId.indexOf(':');
+        if (mediaId.startsWith("p") && colon > 1) {
+            profile = Integer.parseInt(mediaId.substring(1, colon));
+            idPart = mediaId.substring(colon + 1);
+        }
+        if (profile != ProfileManager.getActiveProfileId()) {
+            throw new NumberFormatException("Media id from another profile: " + mediaId);
+        }
+        return Long.parseLong(idPart);
+    }
+
+    public static String feedMediaId(long feedId) {
+        return MEDIA_ID_FEED_PREFIX + episodeMediaId(feedId);
+    }
+
+    /** @throws NumberFormatException si l'id est invalide ou stampé pour un autre profil. */
+    public static long parseFeedMediaId(String mediaId) {
+        return parseEpisodeMediaId(mediaId.substring(MEDIA_ID_FEED_PREFIX.length()));
+    }
     public static final String MEDIA_ID_CONFIRM_STREAMING = "confirm_streaming";
     public static final String KEY_STREAM_URL = "stream_url";
     public static final String KEY_AUTHORIZATION_HEADER = "authorization_header";
@@ -42,7 +78,7 @@ public class MediaItemAdapter {
         metadataBuilder.setIsPlayable(true);
         metadataBuilder.setIsBrowsable(false);
         return new MediaItem.Builder()
-                .setMediaId(String.valueOf(mediaId))
+                .setMediaId(episodeMediaId(mediaId))
                 .setMediaMetadata(metadataBuilder.build())
                 .build();
     }
@@ -61,7 +97,7 @@ public class MediaItemAdapter {
         String mediaId = "0";
         if (playable instanceof FeedMedia) {
             FeedMedia feedMedia = (FeedMedia) playable;
-            mediaId = String.valueOf(feedMedia.getId());
+            mediaId = episodeMediaId(feedMedia.getId());
             metadataBuilder.setSubtitle(feedMedia.getFeedTitle());
             metadataBuilder.setArtist(feedMedia.getFeedTitle());
         }
@@ -173,7 +209,7 @@ public class MediaItemAdapter {
         metadataBuilder.setIsBrowsable(true);
         metadataBuilder.setIsPlayable(false);
         return new MediaItem.Builder()
-                .setMediaId(MEDIA_ID_FEED_PREFIX + feed.getId())
+                .setMediaId(feedMediaId(feed.getId()))
                 .setMediaMetadata(metadataBuilder.build())
                 .build();
     }
