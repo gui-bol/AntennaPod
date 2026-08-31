@@ -1,5 +1,6 @@
 package de.danoeh.antennapod.ui.swipeactions;
 
+import de.danoeh.antennapod.storage.preferences.ProfileManager;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.PorterDuff;
@@ -206,12 +207,12 @@ public class SwipeActionsDialog {
     }
 
     private void savePrefs(String tag, String right, String left) {
-        SharedPreferences prefs = context.getSharedPreferences(SwipeActions.PREF_NAME, Context.MODE_PRIVATE);
+        SharedPreferences prefs = context.getSharedPreferences(ProfileManager.scopedPrefsName(SwipeActions.PREF_NAME), Context.MODE_PRIVATE);
         prefs.edit().putString(SwipeActions.KEY_PREFIX_SWIPEACTIONS + tag, right + "," + left).apply();
     }
 
     private void saveActionsEnabledPrefs(Boolean enabled) {
-        SharedPreferences prefs = context.getSharedPreferences(SwipeActions.PREF_NAME, Context.MODE_PRIVATE);
+        SharedPreferences prefs = context.getSharedPreferences(ProfileManager.scopedPrefsName(SwipeActions.PREF_NAME), Context.MODE_PRIVATE);
         prefs.edit().putBoolean(SwipeActions.KEY_PREFIX_NO_ACTION + tag, enabled).apply();
     }
 

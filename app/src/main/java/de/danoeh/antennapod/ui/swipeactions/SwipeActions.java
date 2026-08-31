@@ -1,5 +1,6 @@
 package de.danoeh.antennapod.ui.swipeactions;
 
+import de.danoeh.antennapod.storage.preferences.ProfileManager;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Canvas;
@@ -91,7 +92,7 @@ public class SwipeActions extends ItemTouchHelper.SimpleCallback implements Life
     }
 
     private static Actions getPrefs(Context context, String tag, String defaultActions) {
-        SharedPreferences prefs = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+        SharedPreferences prefs = context.getSharedPreferences(ProfileManager.scopedPrefsName(PREF_NAME), Context.MODE_PRIVATE);
         String prefsString = prefs.getString(KEY_PREFIX_SWIPEACTIONS + tag, defaultActions);
 
         return new Actions(prefsString);
@@ -129,7 +130,7 @@ public class SwipeActions extends ItemTouchHelper.SimpleCallback implements Life
     }
 
     public static boolean isSwipeActionEnabled(Context context, String tag) {
-        SharedPreferences prefs = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+        SharedPreferences prefs = context.getSharedPreferences(ProfileManager.scopedPrefsName(PREF_NAME), Context.MODE_PRIVATE);
         return prefs.getBoolean(KEY_PREFIX_NO_ACTION + tag, true);
     }
 

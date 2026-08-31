@@ -1,5 +1,6 @@
 package de.danoeh.antennapod.activity;
 
+import de.danoeh.antennapod.storage.preferences.ProfileManager;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
@@ -364,7 +365,7 @@ public class MainActivity extends CastEnabledActivity implements NavigationToolb
     }
 
     private void checkFirstLaunch() {
-        SharedPreferences prefs = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
+        SharedPreferences prefs = getSharedPreferences(ProfileManager.scopedPrefsName(PREF_NAME), MODE_PRIVATE);
         if (prefs.getBoolean(PREF_IS_FIRST_LAUNCH, true)) {
             FeedUpdateManager.getInstance().restartUpdateAlarm(this, true);
 

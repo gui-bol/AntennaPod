@@ -1,5 +1,6 @@
 package de.danoeh.antennapod.ui.share;
 
+import de.danoeh.antennapod.storage.preferences.ProfileManager;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -58,7 +59,7 @@ public class ShareDialog extends BottomSheetDialogFragment {
             viewBinding.mediaAddressCard.setVisibility(View.GONE);
         }
 
-        SharedPreferences prefs = getContext().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+        SharedPreferences prefs = getContext().getSharedPreferences(ProfileManager.scopedPrefsName(PREF_NAME), Context.MODE_PRIVATE);
         viewBinding.sharePositionCheckbox.setChecked(prefs.getBoolean(PREF_SHARE_EPISODE_START_AT, false));
         viewBinding.socialMessageText.setText(ShareUtils.getSocialFeedItemShareText(
                 getContext(), item, viewBinding.sharePositionCheckbox.isChecked(), true));

@@ -1,5 +1,6 @@
 package de.danoeh.antennapod.ui.screen.home.settingsdialog;
 
+import de.danoeh.antennapod.storage.preferences.ProfileManager;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
@@ -65,7 +66,7 @@ public class HomePreferences {
     }
 
     private static List<String> getListPreference(Context context, String preferenceKey) {
-        SharedPreferences prefs = context.getSharedPreferences(HomeFragment.PREF_NAME, Context.MODE_PRIVATE);
+        SharedPreferences prefs = context.getSharedPreferences(ProfileManager.scopedPrefsName(HomeFragment.PREF_NAME), Context.MODE_PRIVATE);
         String hiddenSectionsString = prefs.getString(preferenceKey, "");
         return new ArrayList<>(Arrays.asList(TextUtils.split(hiddenSectionsString, ",")));
     }
@@ -76,7 +77,7 @@ public class HomePreferences {
     }
 
     public static void saveChanges(Context context, List<String> hiddenSections, List<String> sectionOrder) {
-        SharedPreferences prefs = context.getSharedPreferences(HomeFragment.PREF_NAME, Context.MODE_PRIVATE);
+        SharedPreferences prefs = context.getSharedPreferences(ProfileManager.scopedPrefsName(HomeFragment.PREF_NAME), Context.MODE_PRIVATE);
         SharedPreferences.Editor edit = prefs.edit();
         edit.putString(PREF_HIDDEN_SECTIONS, TextUtils.join(",", hiddenSections));
         edit.putString(PREF_SECTION_ORDER, TextUtils.join(",", sectionOrder));

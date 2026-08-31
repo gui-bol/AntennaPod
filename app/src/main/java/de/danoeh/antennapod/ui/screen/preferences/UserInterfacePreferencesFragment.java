@@ -30,6 +30,7 @@ public class UserInterfacePreferencesFragment extends AnimatedPreferenceFragment
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
+        super.onCreatePreferences(savedInstanceState, rootKey);
         addPreferencesFromResource(R.xml.preferences_user_interface);
         setupInterfaceScreen();
         backOpensDrawerToggle(UserPreferences.isBottomNavigationEnabled());

@@ -32,7 +32,7 @@ public class UsageStatistics {
      * @throws IllegalArgumentException if context is null
      */
     public static void init(@NonNull Context context) {
-        prefs = context.getSharedPreferences(PREF_DB_NAME, Context.MODE_PRIVATE);
+        prefs = context.getSharedPreferences(ProfileManager.scopedPrefsName(PREF_DB_NAME), Context.MODE_PRIVATE);
     }
 
     public static void logAction(StatsAction action) {

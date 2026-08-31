@@ -100,6 +100,7 @@ public class ImportExportPreferencesFragment extends AnimatedPreferenceFragment 
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
+        super.onCreatePreferences(savedInstanceState, rootKey);
         addPreferencesFromResource(R.xml.preferences_import_export);
         setupStorageScreen();
         progressDialog = new ProgressDialog(getContext());

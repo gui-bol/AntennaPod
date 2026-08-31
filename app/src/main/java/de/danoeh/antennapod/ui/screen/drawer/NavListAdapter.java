@@ -1,5 +1,6 @@
 package de.danoeh.antennapod.ui.screen.drawer;
 
+import de.danoeh.antennapod.storage.preferences.ProfileManager;
 import android.app.Activity;
 import android.content.SharedPreferences;
 import android.view.ContextMenu;
@@ -60,7 +61,7 @@ public class NavListAdapter extends RecyclerView.Adapter<NavListAdapter.Holder>
         this.itemAccess = itemAccess;
         this.activity = new WeakReference<>(context);
         loadItems();
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences prefs = ProfileManager.getDefaultSharedPreferences(context);
         prefs.registerOnSharedPreferenceChangeListener(this);
     }
 

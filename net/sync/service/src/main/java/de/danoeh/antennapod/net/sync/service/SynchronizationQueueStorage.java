@@ -1,5 +1,6 @@
 package de.danoeh.antennapod.net.sync.service;
 
+import de.danoeh.antennapod.storage.preferences.ProfileManager;
 import android.content.Context;
 import android.content.SharedPreferences;
 
@@ -22,7 +23,7 @@ public class SynchronizationQueueStorage {
     private final SharedPreferences sharedPreferences;
 
     public SynchronizationQueueStorage(Context context) {
-        this.sharedPreferences = context.getSharedPreferences(NAME, Context.MODE_PRIVATE);
+        this.sharedPreferences = context.getSharedPreferences(ProfileManager.scopedPrefsName(NAME), Context.MODE_PRIVATE);
     }
 
     public ArrayList<EpisodeAction> getQueuedEpisodeActions() {

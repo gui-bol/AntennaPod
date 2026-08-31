@@ -1,5 +1,6 @@
 package de.danoeh.antennapod.ui.statistics;
 
+import de.danoeh.antennapod.storage.preferences.ProfileManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -133,7 +134,7 @@ public class StatisticsFragment extends PagedToolbarFragment {
     }
 
     private void doResetStatistics() {
-        getContext().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE).edit()
+        getContext().getSharedPreferences(ProfileManager.scopedPrefsName(PREF_NAME), Context.MODE_PRIVATE).edit()
                 .putBoolean(PREF_INCLUDE_MARKED_PLAYED, false)
                 .putLong(PREF_FILTER_FROM, 0)
                 .putLong(PREF_FILTER_TO, Long.MAX_VALUE)

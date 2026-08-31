@@ -1,5 +1,6 @@
 package de.danoeh.antennapod.ui.screen.rating;
 
+import de.danoeh.antennapod.storage.preferences.ProfileManager;
 import android.content.Context;
 import android.content.SharedPreferences;
 
@@ -29,7 +30,7 @@ public class RatingDialogManager {
 
     public RatingDialogManager(FragmentActivity activity) {
         this.fragmentActivity = activity;
-        preferences = activity.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+        preferences = activity.getSharedPreferences(ProfileManager.scopedPrefsName(PREFS_NAME), Context.MODE_PRIVATE);
     }
 
     public void showIfNeeded() {

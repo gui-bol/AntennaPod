@@ -6,10 +6,22 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.preference.PreferenceFragmentCompat;
 import com.google.android.material.transition.MaterialSharedAxis;
+import de.danoeh.antennapod.storage.preferences.ProfileManager;
 import de.danoeh.antennapod.ui.common.ThemeUtils;
 import de.danoeh.antennapod.ui.preferences.R;
 
 public abstract class AnimatedPreferenceFragment extends PreferenceFragmentCompat {
+    /**
+     * Fork Balado : redirige les écrans de réglages vers le fichier de prefs du profil actif.
+     * Les sous-classes DOIVENT appeler super.onCreatePreferences() en première ligne,
+     * avant setPreferencesFromResource().
+     */
+    @Override
+    public void onCreatePreferences(@Nullable Bundle savedInstanceState, @Nullable String rootKey) {
+        getPreferenceManager().setSharedPreferencesName(
+                ProfileManager.getDefaultPrefsName(requireContext()));
+    }
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

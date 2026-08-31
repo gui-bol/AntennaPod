@@ -1,5 +1,6 @@
 package de.danoeh.antennapod.ui.screen.playback.audio;
 
+import de.danoeh.antennapod.storage.preferences.ProfileManager;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -140,7 +141,7 @@ public class ItemDescriptionFragment extends Fragment {
 
     private void savePreference() {
         Log.d(TAG, "Saving preferences");
-        SharedPreferences prefs = getActivity().getSharedPreferences(PREF, Activity.MODE_PRIVATE);
+        SharedPreferences prefs = getActivity().getSharedPreferences(ProfileManager.scopedPrefsName(PREF), Activity.MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
         if (webvDescription != null) {
             Log.d(TAG, "Saving scroll position: " + webvDescription.getScrollY());
@@ -158,7 +159,7 @@ public class ItemDescriptionFragment extends Fragment {
         Log.d(TAG, "Restoring from preferences");
         Activity activity = getActivity();
         if (activity != null) {
-            SharedPreferences prefs = activity.getSharedPreferences(PREF, Activity.MODE_PRIVATE);
+            SharedPreferences prefs = activity.getSharedPreferences(ProfileManager.scopedPrefsName(PREF), Activity.MODE_PRIVATE);
             String id = prefs.getString(PREF_PLAYABLE_ID, "");
             int scrollY = prefs.getInt(PREF_SCROLL_Y, -1);
             if (scrollY != -1

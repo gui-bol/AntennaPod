@@ -1,5 +1,6 @@
 package de.danoeh.antennapod.ui.screen.preferences;
 
+import de.danoeh.antennapod.storage.preferences.ProfileManager;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import androidx.preference.PreferenceManager;
@@ -22,6 +23,7 @@ public class DownloadsPreferencesFragment extends AnimatedPreferenceFragment
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
+        super.onCreatePreferences(savedInstanceState, rootKey);
         addPreferencesFromResource(R.xml.preferences_downloads);
         setupNetworkScreen();
     }
@@ -30,13 +32,13 @@ public class DownloadsPreferencesFragment extends AnimatedPreferenceFragment
     public void onStart() {
         super.onStart();
         ((PreferenceActivity) getActivity()).getSupportActionBar().setTitle(R.string.downloads_pref);
-        PreferenceManager.getDefaultSharedPreferences(getContext()).registerOnSharedPreferenceChangeListener(this);
+        ProfileManager.getDefaultSharedPreferences(getContext()).registerOnSharedPreferenceChangeListener(this);
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        PreferenceManager.getDefaultSharedPreferences(getContext()).unregisterOnSharedPreferenceChangeListener(this);
+        ProfileManager.getDefaultSharedPreferences(getContext()).unregisterOnSharedPreferenceChangeListener(this);
     }
 
     @Override

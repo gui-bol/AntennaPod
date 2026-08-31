@@ -36,7 +36,7 @@ public class SleepTimerPreferences {
      */
     public static void init(@NonNull Context context) {
         Log.d(TAG, "Creating new instance of SleepTimerPreferences");
-        SleepTimerPreferences.prefs = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+        SleepTimerPreferences.prefs = context.getSharedPreferences(ProfileManager.scopedPrefsName(PREF_NAME), Context.MODE_PRIVATE);
     }
 
     public static void setLastTimer(String value) {

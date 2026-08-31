@@ -1,5 +1,6 @@
 package de.danoeh.antennapod;
 
+import de.danoeh.antennapod.storage.preferences.ProfileManager;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.view.KeyEvent;
@@ -27,8 +28,8 @@ public class PreferenceUpgrader {
     private static SharedPreferences prefs;
 
     public static void checkUpgrades(Context context) {
-        prefs = PreferenceManager.getDefaultSharedPreferences(context);
-        SharedPreferences upgraderPrefs = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+        prefs = ProfileManager.getDefaultSharedPreferences(context);
+        SharedPreferences upgraderPrefs = context.getSharedPreferences(ProfileManager.scopedPrefsName(PREF_NAME), Context.MODE_PRIVATE);
         int oldVersion = upgraderPrefs.getInt(PREF_CONFIGURED_VERSION, -1);
         int newVersion = BuildConfig.VERSION_CODE;
 
@@ -104,7 +105,7 @@ public class PreferenceUpgrader {
             }
         }
         if (oldVersion < 2040000) {
-            SharedPreferences swipePrefs = context.getSharedPreferences(SwipeActions.PREF_NAME, Context.MODE_PRIVATE);
+            SharedPreferences swipePrefs = context.getSharedPreferences(ProfileManager.scopedPrefsName(SwipeActions.PREF_NAME), Context.MODE_PRIVATE);
             swipePrefs.edit().putString(SwipeActions.KEY_PREFIX_SWIPEACTIONS + QueueFragment.TAG,
                     SwipeAction.REMOVE_FROM_QUEUE + "," + SwipeAction.REMOVE_FROM_QUEUE).apply();
         }
@@ -120,7 +121,7 @@ public class PreferenceUpgrader {
             }
 
             SharedPreferences sleepTimerPreferences =
-                    context.getSharedPreferences(SleepTimerPreferences.PREF_NAME, Context.MODE_PRIVATE);
+                    context.getSharedPreferences(ProfileManager.scopedPrefsName(SleepTimerPreferences.PREF_NAME), Context.MODE_PRIVATE);
             TimeUnit[] timeUnits = { TimeUnit.SECONDS, TimeUnit.MINUTES, TimeUnit.HOURS };
             long value = Long.parseLong(SleepTimerPreferences.lastTimerValue());
             TimeUnit unit = timeUnits[sleepTimerPreferences.getInt("LastTimeUnit", 1)];
@@ -156,7 +157,7 @@ public class PreferenceUpgrader {
 
         if (oldVersion < 3030000) {
             SharedPreferences allEpisodesPreferences =
-                    context.getSharedPreferences(AllEpisodesFragment.PREF_NAME, Context.MODE_PRIVATE);
+                    context.getSharedPreferences(ProfileManager.scopedPrefsName(AllEpisodesFragment.PREF_NAME), Context.MODE_PRIVATE);
             String oldEpisodeSort = allEpisodesPreferences.getString(UserPreferences.PREF_SORT_ALL_EPISODES, "");
             if (!StringUtils.isAllEmpty(oldEpisodeSort)) {
                 prefs.edit().putString(UserPreferences.PREF_SORT_ALL_EPISODES, oldEpisodeSort).apply();

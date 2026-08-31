@@ -19,7 +19,7 @@ import java.io.InputStream;
 
 public class DatabaseExporter {
     private static final String TAG = "DatabaseExporter";
-    private static final String TEMP_DB_NAME = PodDBAdapter.DATABASE_NAME + "_tmp";
+    private static final String TEMP_DB_NAME = "AntennapodImport.db_tmp";
 
     public static void exportToDocument(Uri uri, Context context) throws IOException {
         ParcelFileDescriptor pfd = context.getContentResolver().openFileDescriptor(uri, "wt");
@@ -43,7 +43,7 @@ public class DatabaseExporter {
     }
 
     public static int exportToStream(FileOutputStream outFileStream, Context context) throws IOException {
-        File currentDB = context.getDatabasePath(PodDBAdapter.DATABASE_NAME);
+        File currentDB = context.getDatabasePath(PodDBAdapter.getDatabaseName());
         if (!currentDB.exists()) {
             throw new IOException("Cannot access current database");
         }
@@ -87,7 +87,7 @@ public class DatabaseExporter {
             }
             db.close();
 
-            File currentDB = context.getDatabasePath(PodDBAdapter.DATABASE_NAME);
+            File currentDB = context.getDatabasePath(PodDBAdapter.getDatabaseName());
             if (!currentDB.delete()) {
                 throw new IOException("Unable to delete old database");
             }

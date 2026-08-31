@@ -87,7 +87,7 @@ public abstract class PlaybackPreferences {
     private static SharedPreferences prefs;
 
     public static void init(Context context) {
-        prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        prefs = ProfileManager.getDefaultSharedPreferences(context);
     }
 
     public static long getCurrentlyPlayingMediaType() {

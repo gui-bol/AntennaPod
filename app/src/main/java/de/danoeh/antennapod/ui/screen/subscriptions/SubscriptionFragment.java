@@ -1,5 +1,6 @@
 package de.danoeh.antennapod.ui.screen.subscriptions;
 
+import de.danoeh.antennapod.storage.preferences.ProfileManager;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -109,7 +110,7 @@ public class SubscriptionFragment extends Fragment
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        prefs = requireActivity().getSharedPreferences(PREFS, Context.MODE_PRIVATE);
+        prefs = requireActivity().getSharedPreferences(ProfileManager.scopedPrefsName(PREFS), Context.MODE_PRIVATE);
         if (getArguments() != null) {
             stateToShow = getArguments().getInt(ARGUMENT_STATE, Feed.STATE_SUBSCRIBED);
         }

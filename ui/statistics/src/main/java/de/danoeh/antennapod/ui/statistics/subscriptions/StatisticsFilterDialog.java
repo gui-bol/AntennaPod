@@ -1,5 +1,6 @@
 package de.danoeh.antennapod.ui.statistics.subscriptions;
 
+import de.danoeh.antennapod.storage.preferences.ProfileManager;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.text.format.DateFormat;
@@ -30,7 +31,7 @@ public class StatisticsFilterDialog {
 
     public StatisticsFilterDialog(Context context, long oldestDate) {
         this.context = context;
-        prefs = context.getSharedPreferences(StatisticsFragment.PREF_NAME, Context.MODE_PRIVATE);
+        prefs = context.getSharedPreferences(ProfileManager.scopedPrefsName(StatisticsFragment.PREF_NAME), Context.MODE_PRIVATE);
         includeMarkedAsPlayed = prefs.getBoolean(StatisticsFragment.PREF_INCLUDE_MARKED_PLAYED, false);
         timeFilterFrom = prefs.getLong(StatisticsFragment.PREF_FILTER_FROM, 0);
         timeFilterTo = prefs.getLong(StatisticsFragment.PREF_FILTER_TO, Long.MAX_VALUE);

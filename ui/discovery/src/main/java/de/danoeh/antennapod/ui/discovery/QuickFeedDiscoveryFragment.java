@@ -1,5 +1,6 @@
 package de.danoeh.antennapod.ui.discovery;
 
+import de.danoeh.antennapod.storage.preferences.ProfileManager;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -98,7 +99,7 @@ public class QuickFeedDiscoveryFragment extends Fragment implements AdapterView.
         viewBinding.poweredByLabel.setVisibility(View.VISIBLE);
 
         ItunesTopListLoader loader = new ItunesTopListLoader(getContext());
-        SharedPreferences prefs = getActivity().getSharedPreferences(ItunesTopListLoader.PREFS, MODE_PRIVATE);
+        SharedPreferences prefs = getActivity().getSharedPreferences(ProfileManager.scopedPrefsName(ItunesTopListLoader.PREFS), MODE_PRIVATE);
         String countryCode = prefs.getString(ItunesTopListLoader.PREF_KEY_COUNTRY_CODE,
                 Locale.getDefault().getCountry());
         if (prefs.getBoolean(ItunesTopListLoader.PREF_KEY_HIDDEN_DISCOVERY_COUNTRY, false)) {

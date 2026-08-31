@@ -152,7 +152,7 @@ public abstract class UserPreferences {
         Log.d(TAG, "Creating new instance of UserPreferences");
 
         UserPreferences.context = context.getApplicationContext();
-        UserPreferences.prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        UserPreferences.prefs = ProfileManager.getDefaultSharedPreferences(context);
 
         createNoMediaFile();
     }
@@ -715,14 +715,17 @@ public abstract class UserPreferences {
      * @return The data folder that has been requested or null if the folder could not be created.
      */
     public static File getDataFolder(@Nullable String type) {
-        File dataFolder = getTypeDir(prefs.getString(PREF_DATA_FOLDER, null), type);
+        // Fork Balado : les données de chaque profil vivent dans un sous-dossier dédié.
+        String scopedType = ProfileManager.scopedDataFolderType(type);
+        File dataFolder = getTypeDir(prefs.getString(PREF_DATA_FOLDER, null), scopedType);
         if (dataFolder == null || !dataFolder.canWrite()) {
             Log.d(TAG, "User data folder not writable or not set. Trying default.");
-            dataFolder = context.getExternalFilesDir(type);
+            File externalRoot = context.getExternalFilesDir(null);
+            dataFolder = externalRoot == null ? null : getTypeDir(externalRoot.getAbsolutePath(), scopedType);
         }
         if (dataFolder == null || !dataFolder.canWrite()) {
             Log.d(TAG, "Default data folder not available or not writable. Falling back to internal memory.");
-            dataFolder = getTypeDir(context.getFilesDir().getAbsolutePath(), type);
+            dataFolder = getTypeDir(context.getFilesDir().getAbsolutePath(), scopedType);
         }
         return dataFolder;
     }

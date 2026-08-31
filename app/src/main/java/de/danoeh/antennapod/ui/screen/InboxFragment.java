@@ -1,5 +1,6 @@
 package de.danoeh.antennapod.ui.screen;
 
+import de.danoeh.antennapod.storage.preferences.ProfileManager;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -45,7 +46,7 @@ public class InboxFragment extends EpisodesListFragment {
         final View root = super.onCreateView(inflater, container, savedInstanceState);
         toolbar.inflateMenu(R.menu.inbox);
         toolbar.setTitle(R.string.inbox_label);
-        prefs = getActivity().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+        prefs = getActivity().getSharedPreferences(ProfileManager.scopedPrefsName(PREF_NAME), Context.MODE_PRIVATE);
         updateToolbar();
         emptyView.setIcon(R.drawable.ic_inbox);
         emptyView.setTitle(R.string.no_inbox_head_label);

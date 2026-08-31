@@ -1,5 +1,6 @@
 package de.danoeh.antennapod.ui.discovery;
 
+import de.danoeh.antennapod.storage.preferences.ProfileManager;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -97,7 +98,7 @@ public class DiscoveryFragment extends Fragment implements Toolbar.OnMenuItemCli
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        prefs = getActivity().getSharedPreferences(ItunesTopListLoader.PREFS, Context.MODE_PRIVATE);
+        prefs = getActivity().getSharedPreferences(ProfileManager.scopedPrefsName(ItunesTopListLoader.PREFS), Context.MODE_PRIVATE);
         countryCode = prefs.getString(ItunesTopListLoader.PREF_KEY_COUNTRY_CODE, Locale.getDefault().getCountry());
         hidden = prefs.getBoolean(ItunesTopListLoader.PREF_KEY_HIDDEN_DISCOVERY_COUNTRY, false);
         needsConfirm = prefs.getBoolean(ItunesTopListLoader.PREF_KEY_NEEDS_CONFIRM, true);

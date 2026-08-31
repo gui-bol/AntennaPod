@@ -1,5 +1,6 @@
 package de.danoeh.antennapod.ui.screen.drawer;
 
+import de.danoeh.antennapod.storage.preferences.ProfileManager;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -109,7 +110,7 @@ public class NavDrawerFragment extends Fragment implements SharedPreferences.OnS
             return insets;
         });
 
-        SharedPreferences preferences = getContext().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+        SharedPreferences preferences = getContext().getSharedPreferences(ProfileManager.scopedPrefsName(PREF_NAME), Context.MODE_PRIVATE);
         openFolders = new HashSet<>(preferences.getStringSet(PREF_OPEN_FOLDERS, new HashSet<>())); // Must not modify
 
         progressBar = root.findViewById(R.id.progressBar);
@@ -156,7 +157,7 @@ public class NavDrawerFragment extends Fragment implements SharedPreferences.OnS
         if (disposable != null) {
             disposable.dispose();
         }
-        getContext().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
+        getContext().getSharedPreferences(ProfileManager.scopedPrefsName(PREF_NAME), Context.MODE_PRIVATE)
                 .unregisterOnSharedPreferenceChangeListener(this);
     }
 
@@ -375,7 +376,7 @@ public class NavDrawerFragment extends Fragment implements SharedPreferences.OnS
                             openFolders.add(folder.getTitle());
                         }
 
-                        getContext().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
+                        getContext().getSharedPreferences(ProfileManager.scopedPrefsName(PREF_NAME), Context.MODE_PRIVATE)
                                 .edit()
                                 .putStringSet(PREF_OPEN_FOLDERS, openFolders)
                                 .apply();
@@ -486,7 +487,7 @@ public class NavDrawerFragment extends Fragment implements SharedPreferences.OnS
 
     public static void saveLastNavFragment(Context context, String tag) {
         Log.d(TAG, "saveLastNavFragment(tag: " + tag + ")");
-        SharedPreferences prefs = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+        SharedPreferences prefs = context.getSharedPreferences(ProfileManager.scopedPrefsName(PREF_NAME), Context.MODE_PRIVATE);
         SharedPreferences.Editor edit = prefs.edit();
         if (tag != null) {
             edit.putString(PREF_LAST_FRAGMENT_TAG, tag);
@@ -497,7 +498,7 @@ public class NavDrawerFragment extends Fragment implements SharedPreferences.OnS
     }
 
     public static String getLastNavFragment(Context context) {
-        SharedPreferences prefs = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+        SharedPreferences prefs = context.getSharedPreferences(ProfileManager.scopedPrefsName(PREF_NAME), Context.MODE_PRIVATE);
         return prefs.getString(PREF_LAST_FRAGMENT_TAG, HomeFragment.TAG);
     }
 

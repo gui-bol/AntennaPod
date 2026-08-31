@@ -18,6 +18,7 @@ import de.danoeh.antennapod.ui.preferences.screen.AnimatedPreferenceFragment;
 public class ParentalControlPreferencesFragment extends AnimatedPreferenceFragment {
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
+        super.onCreatePreferences(savedInstanceState, rootKey);
         addPreferencesFromResource(R.xml.preferences_parental_control);
         setupPreferences();
     }

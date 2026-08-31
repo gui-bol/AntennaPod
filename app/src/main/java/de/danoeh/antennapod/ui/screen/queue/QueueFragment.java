@@ -1,5 +1,6 @@
 package de.danoeh.antennapod.ui.screen.queue;
 
+import de.danoeh.antennapod.storage.preferences.ProfileManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
@@ -106,7 +107,7 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        prefs = getActivity().getSharedPreferences(PREFS, Context.MODE_PRIVATE);
+        prefs = getActivity().getSharedPreferences(ProfileManager.scopedPrefsName(PREFS), Context.MODE_PRIVATE);
     }
 
     @Override

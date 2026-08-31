@@ -23,6 +23,7 @@ public class SwipePreferencesFragment extends AnimatedPreferenceFragment {
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
+        super.onCreatePreferences(savedInstanceState, rootKey);
         addPreferencesFromResource(R.xml.preferences_swipe);
 
         findPreference(PREF_SWIPE_QUEUE).setOnPreferenceClickListener(preference -> {

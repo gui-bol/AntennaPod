@@ -1,5 +1,6 @@
 package de.danoeh.antennapod.ui.screen.home;
 
+import de.danoeh.antennapod.storage.preferences.ProfileManager;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -81,7 +82,7 @@ public class HomeFragment extends Fragment implements Toolbar.OnMenuItemClickLis
     private void populateSectionList() {
         viewBinding.homeContainer.removeAllViews();
 
-        SharedPreferences prefs = getContext().getSharedPreferences(HomeFragment.PREF_NAME, Context.MODE_PRIVATE);
+        SharedPreferences prefs = getContext().getSharedPreferences(ProfileManager.scopedPrefsName(HomeFragment.PREF_NAME), Context.MODE_PRIVATE);
         if (EchoConfig.isCurrentlyVisible() && prefs.getInt(PREF_HIDE_ECHO, 0) != EchoConfig.RELEASE_YEAR) {
             addSection(new EchoSection(), R.id.home_section_echo);
         }

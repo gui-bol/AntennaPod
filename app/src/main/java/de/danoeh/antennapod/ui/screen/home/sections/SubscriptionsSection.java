@@ -1,5 +1,6 @@
 package de.danoeh.antennapod.ui.screen.home.sections;
 
+import de.danoeh.antennapod.storage.preferences.ProfileManager;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -101,7 +102,7 @@ public class SubscriptionsSection extends HomeSection {
         if (disposable != null) {
             disposable.dispose();
         }
-        SharedPreferences prefs = getContext().getSharedPreferences(StatisticsFragment.PREF_NAME, Context.MODE_PRIVATE);
+        SharedPreferences prefs = getContext().getSharedPreferences(ProfileManager.scopedPrefsName(StatisticsFragment.PREF_NAME), Context.MODE_PRIVATE);
         boolean includeMarkedAsPlayed = prefs.getBoolean(StatisticsFragment.PREF_INCLUDE_MARKED_PLAYED, false);
 
         long threeYearsAgo = System.currentTimeMillis() - 3L * 365L * 24L * 60L * 60L * 1000L;

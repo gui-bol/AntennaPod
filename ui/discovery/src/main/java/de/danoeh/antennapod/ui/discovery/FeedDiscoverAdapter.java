@@ -1,5 +1,6 @@
 package de.danoeh.antennapod.ui.discovery;
 
+import de.danoeh.antennapod.storage.preferences.ProfileManager;
 import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
@@ -61,7 +62,7 @@ public class FeedDiscoverAdapter extends BaseAdapter {
         final PodcastSearchResult podcast = getItem(position);
         holder.imageView.setContentDescription(podcast.title);
         String imageUrl = podcast.imageUrl;
-        if (context.getSharedPreferences("MainActivityPrefs", Context.MODE_PRIVATE)
+        if (context.getSharedPreferences(ProfileManager.scopedPrefsName("MainActivityPrefs"), Context.MODE_PRIVATE)
                 .getBoolean("screenshot_mode", false)) {
             imageUrl = "https://picsum.photos/400/400?random=" + position;
         }

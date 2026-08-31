@@ -1,5 +1,6 @@
 package de.danoeh.antennapod.ui.screen.home.sections;
 
+import de.danoeh.antennapod.storage.preferences.ProfileManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -64,7 +65,7 @@ public class EchoSection extends Fragment {
     }
 
     void hideThisYear() {
-        getContext().getSharedPreferences(HomeFragment.PREF_NAME, Context.MODE_PRIVATE)
+        getContext().getSharedPreferences(ProfileManager.scopedPrefsName(HomeFragment.PREF_NAME), Context.MODE_PRIVATE)
                 .edit().putInt(HomeFragment.PREF_HIDE_ECHO, EchoConfig.RELEASE_YEAR).apply();
         if (isVisible()) {
             ((MainActivity) getActivity()).loadFragment(HomeFragment.TAG, null);

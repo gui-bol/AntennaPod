@@ -12,6 +12,7 @@ import de.danoeh.antennapod.net.sync.serviceinterface.SynchronizationQueue;
 import de.danoeh.antennapod.storage.preferences.SynchronizationSettings;
 import de.danoeh.antennapod.storage.preferences.SynchronizationCredentials;
 import de.danoeh.antennapod.storage.preferences.PlaybackPreferences;
+import de.danoeh.antennapod.storage.preferences.ProfileManager;
 import de.danoeh.antennapod.storage.preferences.SleepTimerPreferences;
 import de.danoeh.antennapod.storage.preferences.UsageStatistics;
 import de.danoeh.antennapod.net.common.UserAgentInterceptor;
@@ -39,6 +40,8 @@ public class ClientConfigurator {
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }
+        // Doit précéder toute autre initialisation : détermine les noms de DB/prefs/dossiers du profil actif.
+        ProfileManager.init(context);
         PodDBAdapter.init(context);
         UserPreferences.init(context);
         SynchronizationCredentials.init(context);

@@ -45,6 +45,7 @@ public class SynchronizationPreferencesFragment extends AnimatedPreferenceFragme
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
+        super.onCreatePreferences(savedInstanceState, rootKey);
         addPreferencesFromResource(R.xml.preferences_synchronization);
         setupScreen();
         updateScreen();

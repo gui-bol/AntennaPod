@@ -19,6 +19,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
 
 import de.danoeh.antennapod.model.feed.FeedCounter;
+import de.danoeh.antennapod.storage.preferences.ProfileManager;
 import de.danoeh.antennapod.model.feed.FeedFunding;
 
 import java.io.File;
@@ -380,8 +381,13 @@ public class PodDBAdapter {
     }
 
     private PodDBAdapter() {
-        dbHelper = new PodDBHelper(PodDBAdapter.context, DATABASE_NAME, null);
+        dbHelper = new PodDBHelper(PodDBAdapter.context, getDatabaseName(), null);
         db = openDb();
+    }
+
+    /** Nom de la base du profil actif (fork Balado : une base par profil). */
+    public static String getDatabaseName() {
+        return ProfileManager.getDatabaseName();
     }
 
     private SQLiteDatabase openDb() {

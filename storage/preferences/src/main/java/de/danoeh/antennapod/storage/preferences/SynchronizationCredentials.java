@@ -16,7 +16,7 @@ public abstract class SynchronizationCredentials {
     private static SharedPreferences prefs;
 
     public static void init(Context context) {
-        prefs = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+        prefs = context.getSharedPreferences(ProfileManager.scopedPrefsName(PREF_NAME), Context.MODE_PRIVATE);
     }
 
     public static String getUsername() {
