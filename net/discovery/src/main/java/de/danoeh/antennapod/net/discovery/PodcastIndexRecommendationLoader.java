@@ -40,13 +40,17 @@ public class PodcastIndexRecommendationLoader {
     private static final String TRENDING_URL =
             "https://api.podcastindex.org/api/1.0/podcasts/trending?max=%d&cat=%s&lang=%s&since=%d";
     private static final String PREFS_NAME = "RecommendationsCache";
-    private static final String PREF_TIMESTAMP = "timestamp";
+    // Suffixe de version : le cache existant contient les résultats anglophones du bogue lang,
+    // et sa TTL de 24 h les servirait encore après la mise à jour. Le renommer force un recalcul.
+    private static final String PREF_TIMESTAMP = "timestamp_v2";
     private static final String PREF_SEEDS_HASH = "seedsHash";
     private static final String PREF_RESULT = "resultJson";
     private static final long CACHE_TTL_MS = 24L * 3600 * 1000;
     private static final int MAX_SEEDS = 5;
     private static final int MAX_CATEGORIES = 3;
     private static final int TRENDING_WINDOW_DAYS = 30;
+    /** En dessous, on complète en anglais plutôt que d'afficher une liste presque vide. */
+    private static final int MIN_LOCAL_RESULTS = 4;
 
     private final Context context;
 
@@ -81,9 +85,36 @@ public class PodcastIndexRecommendationLoader {
             if (categories.isEmpty()) {
                 return new ArrayList<>();
             }
-            String trendingJson = fetchTrending(categories, limit);
-            List<PodcastSearchResult> results = parseResults(trendingJson, subscribedUrls(subscribed), limit);
-            if (!results.isEmpty()) {
+            // Langue de l'appareil d'abord, une seule langue par requête (voir fetchTrending).
+            String language = Locale.getDefault().getLanguage();
+            String trendingJson = fetchTrending(categories, limit, language);
+            // Copie explicite : parseResults peut renvoyer une vue subList, non extensible.
+            List<PodcastSearchResult> results =
+                    new ArrayList<>(parseResults(trendingJson, subscribedUrls(subscribed), limit));
+            boolean usedFallback = false;
+            if (results.size() < MIN_LOCAL_RESULTS && !"en".equals(language)) {
+                usedFallback = true;
+                // Trop peu de contenu dans cette langue : on complète en anglais plutôt que
+                // d'afficher une liste vide.
+                String fallbackJson = fetchTrending(categories, limit, "en");
+                List<PodcastSearchResult> fallback =
+                        parseResults(fallbackJson, subscribedUrls(subscribed), limit);
+                Set<String> seen = new HashSet<>();
+                for (PodcastSearchResult result : results) {
+                    seen.add(result.feedUrl);
+                }
+                for (PodcastSearchResult result : fallback) {
+                    if (results.size() >= limit) {
+                        break;
+                    }
+                    if (seen.add(result.feedUrl)) {
+                        results.add(result);
+                    }
+                }
+            }
+            // On ne met en cache que le cas simple : le cache ne porte qu'une réponse JSON, donc
+            // le mélange langue locale + repli anglais ne s'y relit pas fidèlement.
+            if (!results.isEmpty() && !usedFallback) {
                 prefs.edit()
                         .putInt(PREF_SEEDS_HASH, seedsHash)
                         .putLong(PREF_TIMESTAMP, System.currentTimeMillis())
@@ -143,11 +174,18 @@ public class PodcastIndexRecommendationLoader {
         return top;
     }
 
-    private String fetchTrending(List<String> categories, int limit) throws IOException {
-        String langs = Locale.getDefault().getLanguage();
-        if (!"en".equals(langs)) {
-            langs += ",en";
-        }
+    /**
+     * @param language une seule langue, JAMAIS une liste.
+     *
+     *     Mesuré contre l'API avec cat=Kids,Family,Stories : {@code lang=fr,en} renvoie 40
+     *     résultats sur 40 <b>en anglais</b>, là où {@code lang=fr} renvoie 40 résultats sur 40
+     *     en français, et pertinents. PodcastIndex remplit le quota par popularité — donc en
+     *     anglais — avant qu'un seul flux français n'apparaisse, et le reclassement de
+     *     {@link #parseResults} n'a alors plus rien à remonter. C'était la cause des
+     *     suggestions anglophones.
+     */
+    private String fetchTrending(List<String> categories, int limit, String language)
+            throws IOException {
         long since = System.currentTimeMillis() / 1000L - TRENDING_WINDOW_DAYS * 24L * 3600;
         StringBuilder cats = new StringBuilder();
         for (String category : categories) {
@@ -157,7 +195,8 @@ public class PodcastIndexRecommendationLoader {
             cats.append(URLEncoder.encode(category, "UTF-8"));
         }
         // On demande large : les abonnements existants seront filtrés ensuite.
-        String url = String.format(Locale.ROOT, TRENDING_URL, Math.max(40, limit * 3), cats, langs, since);
+        String url = String.format(Locale.ROOT, TRENDING_URL,
+                Math.max(40, limit * 3), cats, language, since);
         OkHttpClient client = AntennapodHttpClient.getHttpClient();
         try (Response response = client.newCall(PodcastIndexApi.buildAuthenticatedRequest(url)).execute()) {
             if (!response.isSuccessful()) {
