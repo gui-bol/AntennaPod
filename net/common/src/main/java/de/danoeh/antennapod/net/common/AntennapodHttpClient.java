@@ -7,8 +7,10 @@ import de.danoeh.antennapod.model.download.ProxyConfig;
 import de.danoeh.antennapod.net.ssl.SslClientSetup;
 import okhttp3.Cache;
 import okhttp3.Credentials;
+import okhttp3.HttpUrl;
 import okhttp3.JavaNetCookieJar;
 import okhttp3.OkHttpClient;
+import okhttp3.Request;
 import java.io.File;
 import java.net.CookieManager;
 import java.net.CookiePolicy;
@@ -62,6 +64,23 @@ public class AntennapodHttpClient {
         System.setProperty("http.maxConnections", String.valueOf(MAX_CONNECTIONS));
 
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
+
+        // En-tête d'authentification du backend perso, STRICTEMENT limité à son hôte.
+        // Ce client est partagé par toute l'app — téléchargement des flux et des épisodes,
+        // images, recherches PodcastIndex : ajouté sans condition, le secret partirait chez
+        // chaque hébergeur de podcast contacté.
+        final String authHost = syncHost();
+        final String authHeader = de.danoeh.antennapod.storage.preferences.BuildConfig.SYNC_AUTH_HEADER;
+        final String authValue = de.danoeh.antennapod.storage.preferences.BuildConfig.SYNC_AUTH_VALUE;
+        if (authHost != null && !authValue.isEmpty()) {
+            builder.addInterceptor(chain -> {
+                Request request = chain.request();
+                if (authHost.equals(request.url().host())) {
+                    request = request.newBuilder().header(authHeader, authValue).build();
+                }
+                return chain.proceed(request);
+            });
+        }
         builder.interceptors().add(new BasicAuthorizationInterceptor());
         builder.interceptors().add(new UserAgentInterceptor());
 
@@ -96,6 +115,15 @@ public class AntennapodHttpClient {
 
         SslClientSetup.installCertificates(builder);
         return builder;
+    }
+
+    /** Hôte du backend de synchronisation, ou null s'il n'y en a pas de livré. */
+    private static String syncHost() {
+        if (de.danoeh.antennapod.storage.preferences.BuildConfig.SYNC_HOST.isEmpty()) {
+            return null;
+        }
+        HttpUrl url = HttpUrl.parse(de.danoeh.antennapod.storage.preferences.BuildConfig.SYNC_HOST);
+        return url == null ? null : url.host();
     }
 
     public static void setCacheDirectory(File cacheDirectory) {

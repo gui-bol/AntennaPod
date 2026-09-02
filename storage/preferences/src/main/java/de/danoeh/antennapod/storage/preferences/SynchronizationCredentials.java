@@ -44,6 +44,13 @@ public abstract class SynchronizationCredentials {
     }
 
     public static String getHosturl() {
+        if (!BuildConfig.SYNC_HOST.isEmpty()) {
+            // Le serveur est livré avec l'app, pas configuré. Il l'emporte sur la valeur
+            // stockée : les préférences sont scopées par profil, et une installation
+            // existante en garde une par profil — toutes pointant sur l'ancienne adresse
+            // du LAN, qui n'est plus routable depuis que le backend a déménagé.
+            return BuildConfig.SYNC_HOST;
+        }
         return prefs.getString(PREF_HOSTNAME, null);
     }
 

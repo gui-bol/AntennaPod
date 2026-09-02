@@ -6,6 +6,27 @@ apply from: "../../common.gradle"
 android {
     namespace "de.danoeh.antennapod.storage.preferences"
 
+    defaultConfig {
+        // Serveur de sync livré avec l'app. La valeur vit dans ~/.gradle/gradle.properties
+        // et non dans le dépôt : celui-ci est public, et un domaine personnel en dur y serait
+        // une invitation à venir taper dessus. Vide = comportement upstream, saisi par
+        // l'utilisateur. Même motif que podcastindexApiKey dans net/discovery.
+        if (project.hasProperty("baladoSyncHost")) {
+            buildConfigField "String", "SYNC_HOST", '"' + baladoSyncHost + '"'
+        } else {
+            buildConfigField "String", "SYNC_HOST", '""'
+        }
+        // En-tête d'authentification exigé par le reverse proxy devant le backend.
+        // Vide = aucun en-tête ajouté, comportement upstream inchangé.
+        if (project.hasProperty("baladoAuthValue")) {
+            buildConfigField "String", "SYNC_AUTH_HEADER", '"' + baladoAuthHeader + '"'
+            buildConfigField "String", "SYNC_AUTH_VALUE", '"' + baladoAuthValue + '"'
+        } else {
+            buildConfigField "String", "SYNC_AUTH_HEADER", '""'
+            buildConfigField "String", "SYNC_AUTH_VALUE", '""'
+        }
+    }
+
     lint {
         disable "StaticFieldLeak"
     }

@@ -91,7 +91,9 @@ public class GpodderAuthenticationFragment extends DialogFragment {
         if (negativeButton == null) {
             return;
         }
-        if (currentStep == 0) {
+        boolean firstStep = currentStep == STEP_HOSTNAME
+                || (currentStep == STEP_LOGIN && !de.danoeh.antennapod.storage.preferences.BuildConfig.SYNC_HOST.isEmpty());
+        if (firstStep) {
             negativeButton.setText(R.string.cancel_label);
             negativeButton.setOnClickListener(v -> dismiss());
         } else {
@@ -114,6 +116,12 @@ public class GpodderAuthenticationFragment extends DialogFragment {
     private void setupHostView(View view) {
         final Button selectHost = view.findViewById(R.id.chooseHostButton);
         final EditText serverUrlText = view.findViewById(R.id.serverUrlText);
+        if (!de.danoeh.antennapod.storage.preferences.BuildConfig.SYNC_HOST.isEmpty()) {
+            // Serveur livré avec l'app : on l'affiche, mais il n'est plus modifiable —
+            // getHosturl() l'emporterait de toute façon sur ce qui serait saisi ici.
+            serverUrlText.setText(SynchronizationCredentials.getHosturl());
+            serverUrlText.setEnabled(false);
+        }
         selectHost.setOnClickListener(v -> {
             if (serverUrlText.getText().length() == 0) {
                 return;
@@ -282,6 +290,19 @@ public class GpodderAuthenticationFragment extends DialogFragment {
     private void advance() {
         if (currentStep < STEP_FINISH) {
             View view = viewFlipper.getChildAt(currentStep + 1);
+            if (currentStep == STEP_DEFAULT && !de.danoeh.antennapod.storage.preferences.BuildConfig.SYNC_HOST.isEmpty()) {
+                // Serveur livré avec l'app : l'étape « hôte » n'a plus de question à poser,
+                // on la saute pour n'exiger que le compte. getHosturl() renvoie la constante.
+                service = new GpodnetService(AntennapodHttpClient.getHttpClient(),
+                        SynchronizationCredentials.getHosturl(), SynchronizationCredentials.getDeviceId(),
+                        SynchronizationCredentials.getUsername(), SynchronizationCredentials.getPassword());
+                getDialog().setTitle(SynchronizationCredentials.getHosturl());
+                setupLoginView(viewFlipper.getChildAt(STEP_LOGIN));
+                viewFlipper.setDisplayedChild(STEP_LOGIN);
+                currentStep = STEP_LOGIN;
+                updateNavigationButton();
+                return;
+            }
             if (currentStep == STEP_DEFAULT) {
                 setupHostView(view);
             } else if (currentStep == STEP_HOSTNAME) {
