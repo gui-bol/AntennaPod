@@ -19,6 +19,8 @@ android {
 }
 
 dependencies {
+    testImplementation libs.junit
+
     implementation project(':model')
     implementation project(':net:common')
     implementation project(':storage:preferences')
