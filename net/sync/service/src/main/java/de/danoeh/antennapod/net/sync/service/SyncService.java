@@ -59,6 +59,12 @@ public class SyncService extends Worker {
     private static boolean currentlyActive = false;
     private final SynchronizationQueueStorage synchronizationQueueStorage;
 
+    /**
+     * Plancher avant qu'un épisode commencé ailleurs n'entre dans la file : sans lui, un
+     * épisode ouvert quelques secondes par erreur sur un autre appareil atterrirait ici.
+     */
+    private static final int MIN_POSITION_TO_ENQUEUE_SEC = 60;
+
     public SyncService(@NonNull Context context, @NonNull WorkerParameters params) {
         super(context, params);
         synchronizationQueueStorage = new SynchronizationQueueStorage(context);
@@ -284,6 +290,7 @@ public class SyncService extends Worker {
                 .getRemoteActionsOverridingLocalActions(remoteActions,
                         synchronizationQueueStorage.getQueuedEpisodeActions());
         LongList queueToBeRemoved = new LongList();
+        LongList queueToBeAdded = new LongList();
         List<FeedItem> updatedItems = new ArrayList<>();
         for (EpisodeAction action : playActionsToUpdate.values()) {
             String guid = GuidValidator.isValidGuid(action.getGuid()) ? action.getGuid() : null;
@@ -308,12 +315,24 @@ public class SyncService extends Worker {
                 queueToBeRemoved.add(feedItem.getId());
             } else {
                 Log.d(TAG, "Setting position: " + action);
+                if (action.getPosition() >= MIN_POSITION_TO_ENQUEUE_SEC) {
+                    queueToBeAdded.add(feedItem.getId());
+                }
             }
             updatedItems.add(feedItem);
         }
         DBWriter.removeQueueItem(getApplicationContext(), false, queueToBeRemoved.toArray());
         DBReader.loadFeedDataOfFeedItemList(updatedItems);
         DBWriter.setItemList(updatedItems);
+        // Amont : une action distante pose la position mais n'ajoute jamais l'épisode à la
+        // file — elle sait seulement en retirer un épisode terminé. Or l'accueil affiche la
+        // file, donc un épisode commencé sur un autre appareil restait invisible ici, alors
+        // que c'est précisément le scénario d'une bibliothèque partagée entre TV et mobile.
+        // En tête de file : on veut reprendre là où on s'est arrêté, pas passer après.
+        // addQueueItemAt() ignore un épisode déjà en file, l'appel est donc sans risque.
+        for (long itemId : queueToBeAdded.toArray()) {
+            DBWriter.addQueueItemAt(getApplicationContext(), itemId, 0);
+        }
     }
 
     private void clearErrorNotifications() {
