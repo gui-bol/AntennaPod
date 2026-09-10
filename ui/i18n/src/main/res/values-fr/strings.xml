@@ -47,7 +47,7 @@
     <string name="home_continue_title">Continuer d\'écouter</string>
     <string name="home_new_title">Les nouveautés</string>
     <string name="home_downloads_title">Derniers téléchargements</string>
-    <string name="home_welcome_title">Bienvenue dans AntennaPod !</string>
+    <string name="home_welcome_title">Bienvenue dans Histoires !</string>
     <string name="home_welcome_text">Vous n\'avez pas encore d\'abonnements. Ouvrez le menu pour ajouter des podcasts.</string>
     <string name="notification_permission_denied">Vous avez refusé l\'autorisation.</string>
     <string name="configure_home">Paramétrer l\'accueil</string>
